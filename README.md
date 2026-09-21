@@ -1,165 +1,209 @@
 # SJ Golf Store
 
-A production-ready, full-stack golf e-commerce platform built with **Next.js (App Router)**, **PostgreSQL** and **Drizzle ORM**.
+**SJ Golf Store** is a full-stack golf e-commerce platform created by **Sakk Group**. It provides a customer storefront, secure accounts, shopping cart and checkout flows, and a complete administration console for managing products, inventory, orders, customers, content, and store operations.
 
-Three layers, one deployable application:
+## Overview
 
+The application is built as one Next.js application with a PostgreSQL database:
+
+```text
+Storefront and Admin UI
+          |
+Next.js Server Actions and API Routes
+          |
+PostgreSQL + Drizzle ORM
 ```
-Customer UI (Next.js RSC)  →  Commerce API (Server Actions + Route Handlers)  →  PostgreSQL
-```
 
----
-
-## 1. Features
+## Main Features
 
 ### Storefront
-- Premium U.S. golf-retail design system (forest green / charcoal / paper, editorial grids, restrained motion)
-- Sticky header with mega-menu, live search suggestions, account and cart
-- Homepage: hero, featured categories, featured products, value proposition, brand story, collections, best sellers, newsletter
-- Eight collections with SEO URLs: golf-clubs, golf-balls, golf-gloves, golf-bags, golf-accessories, golf-apparel, training-equipment, golf-technology
-- `/shop` full catalogue with faceted filters (price, availability, brand, hand, flex, size, tag), 5 sort modes, pagination
-- Mobile filter/sort drawer, slide-out cart drawer, free-shipping progress bar
-- Product detail: gallery with zoom + thumbnails, golf-specific variant selectors (Hand / Flex / Size), quantity, Add to Cart, Buy Now, sticky mobile CTA, specs, shipping/returns accordion, related products
-- Cart page, 3-step checkout, order confirmation
-- Track Order by number + email
-- Legal + content pages (Refund, Privacy, Terms, Shipping, FAQ, Contact)
 
-### Accounts & security
-- Register, sign in, sign out, profile, password change, addresses, order history, order detail
-- Forgot / reset password with one-time hashed tokens (1 hour expiry, single use)
-- Device/session manager with per-session revoke and "sign out everywhere"
-- Account activity feed
+- Responsive golf equipment storefront
+- Homepage hero, categories, featured products, story, and newsletter sections
+- Eight product categories and a complete shop catalogue
+- Product search with live suggestions
+- Filtering by price, brand, stock, hand, flex, size, tags, and sale status
+- Product galleries with thumbnails and zoom support
+- Product variants such as hand, flex, size, and pack options
+- Cart drawer, cart page, and free-shipping progress indicator
+- Checkout, order confirmation, and order tracking
+- Refund, privacy, terms, shipping, FAQ, and contact pages
 
-### Admin console (`/admin`)
-Dashboard · Orders (status tabs, detail, fulfillment, refunds) · Products (CRUD, options/variant builder, duplicate, publish) · Collections · Import/Export (CSV) · Inventory (adjust + audit history) · Customers · Discounts · Shipping (zones/rates) · Taxes · Payments · Content CMS · Marketing · Reviews · Analytics · Reports · Staff & permissions · Notifications · SEO · Settings · System health, webhooks, jobs, audit log
+### Customer Accounts
 
----
+- Registration and login
+- Secure logout and session management
+- Profile and password management
+- Saved addresses
+- Order history and order details
+- Active-session management
+- Forgot-password and reset-password flow
 
-## 2. Security
+### Admin Console
 
-| Control | Implementation |
-|---|---|
-| Password storage | scrypt (N=16384, r=8, p=1), 16-byte random salt, versioned hash format, constant-time compare |
-| Sessions | Opaque 256-bit token in `HttpOnly` `SameSite=Lax` `Secure` cookie; only the SHA-256 hash is stored server-side |
-| Session validation | Every request resolves the cookie against the `sessions` table; revoked/expired rows are rejected |
-| Session rotation | New session on sign-in, password change and reset; all other sessions revoked on password change |
-| Brute force | Per-IP rate limit (8 sign-ins / 5 min) **plus** per-account lockout after 6 failures for 15 minutes |
-| Registration abuse | 5 accounts / hour / IP |
-| Password reset abuse | 4 requests / 15 min / IP, 8 redemptions / 15 min / IP |
-| Checkout abuse | 40 orders / 10 min; Luhn card validation; live stock re-check prevents oversell |
-| CSRF | `SameSite=Lax` cookies + middleware Origin/Host verification on POST/PUT/PATCH/DELETE |
-| Input validation | Zod schemas on every server action (auth, checkout, contact, newsletter) |
-| SQL injection | Drizzle parameterised queries exclusively |
-| XSS | React auto-escaping; no `dangerouslySetInnerHTML` except JSON-LD |
-| Clickjacking | `X-Frame-Options: DENY` + `frame-ancestors 'none'` |
-| Content injection | Strict `Content-Security-Policy` (self-only default, pinned image hosts) |
-| Transport | HSTS (2 years, preload, includeSubDomains), `upgrade-insecure-requests` |
-| Info leakage | `X-Powered-By` removed, `nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` |
-| Privacy | `Permissions-Policy` disables camera/mic/geolocation/payment |
-| RBAC | Role checks (`admin` / `staff` / `customer`) enforced server-side in layout + every API route |
-| Audit trail | Sign-in, sign-out, failures, password changes, refunds, inventory and settings changes recorded with actor + timestamp |
+Available at `/admin` for authorized staff:
 
-Admin sign-in: `admin@sjgolfstore.com` / `admin123` · Customer: `john.smith@example.com` / `password123`
+- Dashboard and analytics
+- Product creation and editing
+- Automatic SKU and barcode generation for new products
+- Product image upload with preview and removal
+- Product options, variants, prices, and inventory
+- Orders, fulfillment, refunds, and payments
+- Customers and staff management
+- Collections and catalogue management
+- Discounts, shipping, and tax settings
+- Homepage content management
+- Reviews, marketing, reports, SEO, notifications, and system health
+- CSV import and export
+- Audit history for important administrative actions
 
-> Change these immediately in any real deployment.
+## Technology
 
----
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- PostgreSQL
+- Drizzle ORM
+- Tailwind CSS 4
+- ImageKit for uploaded media
+- Zod validation
+- Node.js
 
-## 3. Environment variables
+## Images and Media
 
-Copy `.env.example` to `.env`:
+Product and website images are stored as URLs and rendered through database/API responses. The repository includes the local catalogue image files in `public/images` so the site can display the seeded catalogue without depending on external image URLs.
 
-```bash
-DATABASE_URL=postgresql://user:pass@host:5432/db
-SESSION_SECRET=<openssl rand -base64 48>
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
-```
+The admin upload flow uses ImageKit:
 
-`SESSION_SECRET` signs session cookies and hashes tokens. **Rotating it invalidates every session.**
+1. An administrator selects an image in the admin panel.
+2. The browser sends the file to `/api/upload`.
+3. The server uploads the file to ImageKit.
+4. The returned ImageKit URL is saved with the product or content record.
+5. The storefront reads and displays the saved URL from the database.
 
----
+See [IMAGE_MANIFEST.md](IMAGE_MANIFEST.md) for the image inventory and image replacement guidance.
 
-## 4. Deploy / Run from the zip
+## Requirements
 
-Everything you need ships in the repository — **the full demo dataset (seeded
-automatically) and every photograph (bundled in `public/images/`, zero external
-dependencies, nothing can 404)**. Each product has its own unique image — no
-repeats. All photos are real Pexels stock photography. Every image is documented
-in **[IMAGE_MANIFEST.md](IMAGE_MANIFEST.md)** — what each photo shows, where it
-appears, and how to replace it with your own photos.
+- Node.js 20 or newer
+- PostgreSQL 14 or newer
+- An ImageKit account for admin media uploads
+
+## Installation
+
+Install dependencies:
 
 ```bash
 npm install
-npm run dev        # or: npm run build && npm start
 ```
 
-That's it. On first boot (or first `/api/health` hit) the app will:
+Create a local environment file named `.env` in the project root:
 
-1. **Create the entire schema** if the database is empty (idempotent DDL in `src/db/tables.ts`)
-2. **Seed the demo catalogue** — 55 products, 191 variants, 8 collections, 26 orders,
-   customers, discounts, shipping zones, tax regions, content blocks, settings,
-   audit logs, staff, webhooks
+```env
+DATABASE_URL=postgresql://user:password@host:5432/database
+SESSION_SECRET=replace-with-a-long-random-secret
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
-No manual migrations or seed step are required. Useful flags:
+IMAGEKIT_PUBLIC_KEY=your-imagekit-public-key
+IMAGEKIT_PRIVATE_KEY=your-imagekit-private-key
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your-imagekit-id
+```
+
+Never commit `.env` or private keys. Use `.env.example` as the shareable configuration template when available.
+
+## Database Setup
+
+Bootstrap the schema and demo data:
 
 ```bash
-npx tsx scripts/setup.ts            # bootstrap schema + seed (no-op if data exists)
-npx tsx scripts/setup.ts --reset    # wipe everything and reseed from scratch
-npx drizzle-kit push                # optional: refresh schema from src/db/schema.ts
+npx tsx scripts/setup.ts
 ```
 
-> The `DATABASE_URL` in `.env` must point at a reachable PostgreSQL instance.
-> If you download the zip to a new machine: start Postgres, set `DATABASE_URL`,
-> and the app builds its own schema and data on first boot.
+To reset the local database and seed it again:
 
-### Deployment checklist
-1. Set a strong, unique `SESSION_SECRET` and never commit it
-2. Set `NEXT_PUBLIC_SITE_URL` to the production origin (drives canonicals, OG tags, sitemap)
-3. Point `DATABASE_URL` at the production database — schema and demo data auto-bootstrap on first request (or run `npx tsx scripts/setup.ts` first)
-4. Rotate or delete the seeded demo accounts
-5. Point the payment provider at `/api/webhooks/payments` and store secrets server-side only
-6. Connect a transactional email provider for order/reset emails
-7. Submit `https://your-domain.com/sitemap.xml` to Google Search Console
-8. Verify `/api/health` returns `200` for uptime monitoring
-9. Review `/admin/system` for service health, failed webhooks and jobs
-
-### Production recommendations
-- Move rate limiting from Postgres to Redis when running multiple instances
-- Replace the built-in test gateway with Stripe/Adyen (server-side keys only)
-- Point password-reset links at a real email provider instead of returning them in the response
-- Serve through a CDN; images are already AVIF/WebP with `next/image`
-
----
-
-## 5. Project structure
-
+```bash
+npx tsx scripts/setup.ts --reset
 ```
+
+The seeded catalogue contains:
+
+- 55 products
+- 191 variants
+- 8 categories
+- Demo customers, orders, discounts, content blocks, settings, and operational records
+
+Use a separate database for development and production. Do not run the reset command against a production database.
+
+## Running the Application
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+Production build:
+
+```bash
+npm run build
+npm start
+```
+
+Health check:
+
+```text
+GET /api/health
+```
+
+The health route verifies database connectivity and bootstraps a new empty database when required.
+
+## Project Structure
+
+```text
 src/
 ├── app/
-│   ├── (store)/                 storefront layout + all shop routes
-│   │   ├── (auth)/account/      login, register, forgot/reset password (public)
-│   │   ├── (account)/account/   dashboard, orders, addresses, profile, security (guarded)
-│   │   ├── products/[slug]/     product detail
-│   │   ├── [category]/          collection or content page resolver
-│   │   ├── shop, cart, checkout, search, track-order
-│   ├── admin/                   20-section admin console
-│   ├── actions/                 server actions (auth, cart, checkout, admin, marketing)
-│   ├── api/                     search, health, admin import/export
-│   ├── layout.tsx, middleware.ts, sitemap.ts, robots.ts
-├── components/{store,admin}/    client + server components
-├── db/                          schema.ts, index.ts, seed.ts
-└── lib/                         auth, cart, catalog, validation, format
+│   ├── (store)/          Storefront, account, checkout, and product routes
+│   ├── admin/             Admin console pages
+│   ├── actions/           Server actions for auth, cart, checkout, and admin
+│   └── api/               Upload, search, health, import, and export routes
+├── components/
+│   ├── admin/             Admin UI and forms
+│   └── store/             Storefront UI and client interactions
+├── db/                    Drizzle schema, database connection, tables, and seed data
+└── lib/                   Authentication, catalogue, cart, validation, and formatting
+public/
+└── images/                Bundled product and storefront images
+scripts/
+└── setup.ts               Database bootstrap and seed command
 ```
 
-## 6. Scripts
+## Development Commands
 
 | Command | Purpose |
-|---|---|
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
-| `npm start` | Production server |
-| `npm run typecheck` | TypeScript check |
-| `npm run lint` | ESLint |
-| `npx drizzle-kit push` | Apply schema to database |
-#   s j g o l f s t o r e  
- 
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Create a production build |
+| `npm start` | Start the production server |
+| `npm run typecheck` | Run the TypeScript compiler without emitting files |
+| `npm run lint` | Run ESLint |
+| `npx tsx scripts/setup.ts` | Create tables and seed demo data |
+| `npx drizzle-kit push` | Apply the Drizzle schema to PostgreSQL |
+
+## Security Notes
+
+- Passwords are hashed before storage.
+- Sessions use secure HTTP-only cookies.
+- Server actions validate submitted data with Zod.
+- Database queries use Drizzle's parameterized query APIs.
+- Admin access is protected by server-side role checks.
+- Important authentication and admin actions are written to the audit log.
+- Replace all demo credentials before production use.
+- Use a strong, unique `SESSION_SECRET` in every environment.
+
+## Ownership
+
+Created and maintained by **Sakk Group**.
+
+SJ Golf Store is a Sakk Group commerce project focused on a reliable, polished, and maintainable online golf retail experience.
