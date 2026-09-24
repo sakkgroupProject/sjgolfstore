@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { LockKeyhole, RotateCcw } from "lucide-react";
 import { placeOrderAction, type CheckoutPayload } from "@/app/actions/checkout";
 import { applyDiscountAction, removeDiscountAction } from "@/app/actions/cart";
 import { formatMoney, STATES } from "@/lib/format";
@@ -361,9 +362,9 @@ export function CheckoutClient({
         </div>
 
         <div className="mt-5 space-y-2 border border-line bg-paper p-5 text-xs text-ink-soft">
-          <p className="flex items-center gap-2">🔒 Secure 256-bit SSL checkout</p>
+          <p className="flex items-center gap-2"><LockKeyhole size={16} strokeWidth={1.7} aria-hidden="true" /> Secure 256-bit SSL checkout</p>
           <p className="flex items-center gap-2"><ShippingIcon /> Free U.S. shipping on orders over $100</p>
-          <p className="flex items-center gap-2">↩ 30-day returns on unused equipment</p>
+          <p className="flex items-center gap-2"><RotateCcw size={16} strokeWidth={1.7} aria-hidden="true" /> 30-day returns on unused equipment</p>
         </div>
       </aside>
     </div>

@@ -15,11 +15,9 @@ export default async function HomePage() {
     listProducts({ sort: "best-selling", perPage: 4 }),
   ]);
   const block = (key: string) => blocks.find((b) => b.key === key);
-  const hero = block("hero");
   const valueProp = block("value_prop");
   const story = block("story");
   const newsletter = block("newsletter");
-  const heroData = hero?.data ?? {};
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -36,53 +34,28 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* ---------------- HERO ---------------- */}
-      <section className="relative isolate overflow-hidden bg-forest-dark text-white">
-        <div className="absolute inset-0">
-          {hero?.imageUrl ? (
-            <Image
-              src={hero.imageUrl}
-              alt="Golfer teeing off at sunrise"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-center opacity-[0.55]"
-            />
-          ) : null}
-          <div className="absolute inset-0 bg-gradient-to-r from-forest-dark/95 via-forest-dark/70 to-forest-dark/20" />
-        </div>
-        <div className="wrap relative flex min-h-[34rem] flex-col justify-center py-20 md:min-h-[38rem] lg:min-h-[42rem]">
-          <div className="max-w-2xl animate-fade-up">
-            {hero?.eyebrow ? <p className="eyebrow text-sand">{hero.eyebrow}</p> : null}
-            <h1 className="mt-4 text-[3rem] leading-[0.95] tracking-tight sm:text-[4.2rem] lg:text-[5.2rem]">
-              {hero?.title ?? "ELEVATE YOUR GAME"}
-            </h1>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-white/80">
-              {hero?.subtitle ?? "Premium golf equipment built for your next round."}
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Link href={hero?.ctaHref || "/golf-clubs"} className="btn bg-white text-forest hover:bg-paper-warm">
-                {hero?.ctaLabel || "Shop Golf Clubs"}
-              </Link>
-              <Link
-                href={heroData.secondaryHref || "/shop"}
-                className="btn border-white/40 text-white hover:border-white hover:bg-white/10"
-              >
-                {heroData.secondaryLabel || "Shop All Equipment"}
-              </Link>
-            </div>
-            <dl className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-7">
-              {[
-                ["4.8/5", "12,400+ golfer reviews"],
-                ["48 hrs", "Custom club build time"],
-                ["30 days", "No-hassle returns"],
-              ].map(([big, small]) => (
-                <div key={big}>
-                  <dt className="text-xl font-semibold text-white">{big}</dt>
-                  <dd className="mt-1 text-[0.7rem] uppercase tracking-[0.14em] text-white/55">{small}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+      <section className="relative mx-auto aspect-[1712/624] w-full max-w-[1920px] overflow-hidden bg-paper-warm">
+        <Image
+          src="/herosectionimage.jpg"
+          alt="Help! Golf equipment collection"
+          fill
+          priority
+          sizes="100vw"
+          unoptimized
+          className="object-cover"
+        />
+        <div className="absolute bottom-[9%] left-4 z-10 w-[54%] max-w-[27rem] text-ink sm:bottom-[15%] sm:left-[8%] sm:w-[42%]">
+          <h1 className="text-[0.7rem] font-bold leading-tight sm:text-2xl md:text-3xl">FUN. FUNCTION. GOLF.</h1>
+          <p className="mt-0.5 max-w-[22rem] text-[0.4rem] leading-snug sm:mt-2 sm:text-xs md:text-sm">
+            Quality golf accessories and original inventions designed to make the game more enjoyable.
+          </p>
+          <Link
+            href="/shop"
+            className="mt-1 inline-flex bg-[#2f7d1e] px-2.5 py-1 text-[0.4rem] font-bold tracking-wide text-white transition hover:bg-[#256617] sm:mt-4 sm:px-8 sm:py-3 sm:text-xs md:px-10 md:py-3.5"
+          >
+            SHOP NOW
+          </Link>
+          <p className="mt-0.5 text-[0.35rem] text-ink sm:mt-2 sm:text-[0.65rem]">HELP!® is a registered trademark</p>
         </div>
       </section>
 
