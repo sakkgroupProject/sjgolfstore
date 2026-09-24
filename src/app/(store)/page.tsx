@@ -34,28 +34,39 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* ---------------- HERO ---------------- */}
-      <section className="relative mx-auto aspect-[1712/624] w-full max-w-[1920px] overflow-hidden bg-paper-warm">
-        <Image
-          src="/herosectionimage.jpg"
-          alt="Help! Golf equipment collection"
-          fill
-          priority
-          sizes="100vw"
-          unoptimized
-          className="object-cover"
-        />
-        <div className="absolute bottom-[9%] left-4 z-10 w-[54%] max-w-[27rem] text-ink sm:bottom-[15%] sm:left-[8%] sm:w-[42%]">
-          <h1 className="text-[0.7rem] font-bold leading-tight sm:text-2xl md:text-3xl">FUN. FUNCTION. GOLF.</h1>
-          <p className="mt-0.5 max-w-[22rem] text-[0.4rem] leading-snug sm:mt-2 sm:text-xs md:text-sm">
+      <section className="relative mx-auto w-full max-w-[1920px] overflow-hidden bg-paper-warm md:aspect-[1712/624]">
+        <div className="relative aspect-[1080/1350] w-full md:absolute md:inset-0 md:aspect-auto">
+          <Image
+            src="/herosectionimage-mobile.png"
+            alt="Help! Golf equipment collection"
+            fill
+            priority
+            sizes="100vw"
+            unoptimized
+            className="object-contain md:hidden"
+          />
+          <Image
+            src="/herosectionimage.jpg"
+            alt="Help! Golf equipment collection"
+            fill
+            priority
+            sizes="100vw"
+            unoptimized
+            className="hidden object-contain md:block"
+          />
+        </div>
+        <div className="relative z-10 w-full bg-paper-warm px-5 py-8 text-ink md:absolute md:bottom-[15%] md:left-[8%] md:w-[42%] md:max-w-[27rem] md:bg-transparent md:p-0">
+          <h1 className="text-2xl font-bold leading-tight md:text-3xl">FUN. FUNCTION. GOLF.</h1>
+          <p className="mt-2 max-w-[22rem] text-sm leading-snug md:text-sm">
             Quality golf accessories and original inventions designed to make the game more enjoyable.
           </p>
           <Link
             href="/shop"
-            className="mt-1 inline-flex bg-[#2f7d1e] px-2.5 py-1 text-[0.4rem] font-bold tracking-wide text-white transition hover:bg-[#256617] sm:mt-4 sm:px-8 sm:py-3 sm:text-xs md:px-10 md:py-3.5"
+            className="mt-5 inline-flex bg-[#2f7d1e] px-7 py-3 text-xs font-bold tracking-wide text-white transition hover:bg-[#256617] md:mt-4 md:px-10 md:py-3.5"
           >
             SHOP NOW
           </Link>
-          <p className="mt-0.5 text-[0.35rem] text-ink sm:mt-2 sm:text-[0.65rem]">HELP!® is a registered trademark</p>
+          <p className="mt-2 text-[0.65rem] text-ink">HELP!® is a registered trademark</p>
         </div>
       </section>
 

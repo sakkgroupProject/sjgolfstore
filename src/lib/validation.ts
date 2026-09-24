@@ -2,6 +2,14 @@ import { z } from "zod";
 
 export const emailSchema = z.string().trim().toLowerCase().email("Enter a valid email address.").max(160);
 
+export const phoneSchema = z
+  .string()
+  .trim()
+  .min(7, "Enter a valid phone number.")
+  .max(30, "Phone number is too long.")
+  .regex(/^\+?[0-9().\s-]+$/, "Enter a valid phone number.")
+  .refine((value) => value.replace(/\D/g, "").length >= 7 && value.replace(/\D/g, "").length <= 15, "Enter a valid phone number.");
+
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, "Enter your password.").max(200),
@@ -48,7 +56,7 @@ export const addressSchema = z.object({
 
 export const checkoutSchema = z.object({
   email: emailSchema,
-  phone: z.string().trim().max(30).default(""),
+  phone: phoneSchema,
   firstName: z.string().trim().min(1, "First name is required.").max(60),
   lastName: z.string().trim().min(1, "Last name is required.").max(60),
   address1: z.string().trim().min(3, "Street address is required.").max(160),

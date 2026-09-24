@@ -81,11 +81,14 @@ export function CheckoutClient({
   const total = Math.max(initialTotals.subtotalCents - discount + shipping + tax, 0);
 
   const set = (key: keyof typeof form, value: string | boolean) => setForm((f) => ({ ...f, [key]: value }));
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
+  const validPhone = /^\+?[0-9().\s-]+$/.test(form.phone.trim()) && form.phone.replace(/\D/g, "").length >= 7 && form.phone.replace(/\D/g, "").length <= 15;
 
   const stepValid = (n: number) => {
     if (n === 1) {
       return (
-        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email) &&
+        validEmail &&
+        validPhone &&
         form.firstName.trim() &&
         form.lastName.trim() &&
         form.address1.trim() &&
@@ -154,8 +157,14 @@ export function CheckoutClient({
             <div>
               <h2 className="text-xl">Contact</h2>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <input className="field" placeholder="Email" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} />
-                <input className="field" placeholder="Phone" value={form.phone} onChange={(e) => set("phone", e.target.value)} />
+                <div>
+                  <input className="field" placeholder="Email" type="email" required aria-invalid={form.email.length > 0 && !validEmail} value={form.email} onChange={(e) => set("email", e.target.value)} />
+                  {form.email.length > 0 && !validEmail ? <p className="mt-1 text-xs text-red-700">Enter a valid email address.</p> : null}
+                </div>
+                <div>
+                  <input className="field" placeholder="Phone" type="tel" inputMode="tel" required aria-invalid={form.phone.length > 0 && !validPhone} value={form.phone} onChange={(e) => set("phone", e.target.value)} />
+                  {form.phone.length > 0 && !validPhone ? <p className="mt-1 text-xs text-red-700">Enter a valid phone number.</p> : null}
+                </div>
               </div>
               {!user ? (
                 <label className="mt-3 flex items-center gap-2 text-sm text-ink-soft">
