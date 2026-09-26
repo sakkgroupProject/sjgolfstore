@@ -22,25 +22,25 @@ const display = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SJ Golf Store | Premium Golf Equipment",
-    template: "%s | SJ Golf Store",
+    default: "SJ Golf | Premium Golf Equipment",
+    template: "%s | SJ Golf",
   },
   description:
     "Premium golf clubs, balls, bags, gloves, apparel, training aids and technology. Free U.S. shipping on orders over $100.",
   keywords: ["golf clubs", "golf balls", "golf bags", "golf gloves", "golf apparel", "golf store"],
-  applicationName: "SJ Golf Store",
-  authors: [{ name: "SJ Golf Store" }],
+  applicationName: "SJ Golf",
+  authors: [{ name: "SJ Golf" }],
   openGraph: {
     type: "website",
-    siteName: "SJ Golf Store",
+    siteName: "SJ Golf",
     locale: "en_US",
-    title: "SJ Golf Store | Premium Golf Equipment",
+    title: "SJ Golf | Premium Golf Equipment",
     description: "Premium golf equipment built for your next round. Free U.S. shipping over $100.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "SJ Golf Store | Premium Golf Equipment",
+    title: "SJ Golf | Premium Golf Equipment",
     description: "Premium golf equipment built for your next round.",
   },
   robots: {

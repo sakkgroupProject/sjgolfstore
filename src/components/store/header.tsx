@@ -128,13 +128,10 @@ export function Header({
             </span>
           </button>
 
-          <Link href="/" className="flex shrink-0 items-center gap-2.5">
-            <span className="grid size-9 place-items-center rounded-sm bg-forest text-[0.8rem] font-semibold text-white">
-              SJ
-            </span>
-            <span className="leading-none">
-              <span className="block text-[0.95rem] font-normal uppercase tracking-[0.24em]">SJ Golf</span>
-              <span className="mt-0.5 block text-[0.58rem] uppercase tracking-[0.42em] text-moss">Store</span>
+          <Link href="/" className="flex shrink-0 items-center gap-3 group">
+            <Image src="/sjgolfstore-logo.png" alt="SJ Golf Logo" width={40} height={40} className="h-10 w-auto object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-105" />
+            <span className="leading-none hidden sm:block">
+              <span className="block text-[1rem] font-bold uppercase tracking-[0.24em] text-forest">SJ Golf</span>
             </span>
           </Link>
 
@@ -334,7 +331,12 @@ export function Header({
       {mobileOpen ? (
         <div className="fixed inset-0 z-[70] flex flex-col bg-white lg:hidden">
           <div className="flex h-16 items-center justify-between border-b border-line px-5">
-            <span className="text-sm font-bold uppercase tracking-[0.16em]">SJ Golf Store</span>
+            <div className="flex items-center gap-2.5">
+              <Image src="/sjgolfstore-logo.png" alt="SJ Golf Logo" width={32} height={32} className="h-8 w-auto object-contain" />
+              <span className="leading-none">
+                <span className="block text-[0.85rem] font-bold uppercase tracking-[0.2em] text-forest">SJ Golf</span>
+              </span>
+            </div>
             <button onClick={() => setMobileOpen(false)} aria-label="Close menu" className="text-xl">
               <CloseIcon />
             </button>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { NewsletterForm } from "./newsletter-form";
 
 type Cat = { slug: string; name: string };
@@ -8,11 +9,11 @@ export function Footer({ categories }: { categories: Cat[] }) {
     <footer className="border-t border-line bg-forest text-white">
       <div className="wrap grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-5 lg:py-16">
         <div className="lg:col-span-2">
-          <div className="flex items-center gap-2.5">
-            <span className="grid size-9 place-items-center rounded-sm bg-white text-[0.8rem] font-semibold text-forest">SJ</span>
+          <div className="flex items-center gap-3">
+            <Image src="/sjgolfstore-logo.png" alt="SJ Golf Logo" width={40} height={40} className="h-10 w-auto object-contain brightness-0 invert opacity-90 transition-opacity hover:opacity-100" />
             <span className="leading-none">
-              <span className="block text-[0.95rem] font-normal uppercase tracking-[0.24em]">SJ Golf Store</span>
-              <span className="mt-0.5 block text-[0.58rem] uppercase tracking-[0.4em] text-sand">Est. Orlando, FL</span>
+              <span className="block text-[1.05rem] font-medium uppercase tracking-[0.24em] text-white">SJ Golf</span>
+              <span className="mt-1 block text-[0.6rem] uppercase tracking-[0.4em] text-sand/80">Est. Orlando, FL</span>
             </span>
           </div>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/70">
@@ -73,7 +74,7 @@ export function Footer({ categories }: { categories: Cat[] }) {
 
       <div className="border-t border-white/10">
         <div className="wrap flex flex-col items-center justify-between gap-4 py-6 text-xs text-white/55 md:flex-row">
-          <p>© {new Date().getFullYear()} SJ Golf Store. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} SJ Golf. All rights reserved.</p>
           <div className="flex items-center gap-3">
             {["VISA", "MASTERCARD", "AMEX", "PAYPAL", "APPLE PAY"].map((p) => (
               <span key={p} className="border border-white/15 px-2 py-1 text-[0.6rem] tracking-[0.12em]">

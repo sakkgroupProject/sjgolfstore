@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useActionState } from "react";
 import { loginAction } from "@/app/actions/auth";
 
@@ -10,11 +11,11 @@ export function AdminLogin({ signedIn, email }: { signedIn: boolean; email?: str
   return (
     <div className="grid min-h-screen place-items-center bg-forest-dark px-4 py-16">
       <div className="w-full max-w-sm">
-        <div className="flex items-center gap-2.5 text-white">
-          <span className="grid size-9 place-items-center rounded-sm bg-white text-[0.8rem] font-bold text-forest">SJ</span>
+        <div className="flex items-center gap-3.5 text-white mb-2">
+          <Image src="/sjgolfstore-logo.png" alt="SJ Golf Logo" width={44} height={44} className="h-11 w-auto object-contain brightness-0 invert" />
           <span className="leading-none">
-            <span className="block text-[0.85rem] font-bold uppercase tracking-[0.18em]">SJ Golf Store</span>
-            <span className="mt-0.5 block text-[0.6rem] uppercase tracking-[0.3em] text-sand">Admin Console</span>
+            <span className="block text-[1rem] font-bold uppercase tracking-[0.2em] text-white">SJ Golf</span>
+            <span className="mt-1 block text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-sand/90">Admin Console</span>
           </span>
         </div>
 

@@ -127,7 +127,7 @@ export function Filters({ facets, basePath }: { facets: Facets; basePath: string
 
       {MULTI_KEYS.filter((group) => group.options(facets).length > 0).map((group) => (
         <Section key={group.key} title={group.label}>
-          <div className="space-y-2">
+          <div className="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
             {group.options(facets).map((value) => (
               <Check
                 key={value}
