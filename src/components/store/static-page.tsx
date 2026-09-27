@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { pages } from "@/db/schema";
 import { ContactForm } from "./contact-form";
+import { QuotationForm } from "./quotation-form";
 
 export async function StaticPageView({ slug }: { slug: string }) {
   const rows = await db.select().from(pages).where(eq(pages.slug, slug)).limit(1);
@@ -43,6 +44,17 @@ export async function StaticPageView({ slug }: { slug: string }) {
             </a>{" "}
             and we will help you find the right gear.
           </p>
+        </div>
+      ) : null}
+      {slug === "custom-orders" ? (
+        <div className="mt-12 border-t border-line pt-10">
+          <h2 className="text-2xl">Customized for Clubs or events</h2>
+          <p className="mt-2 text-sm text-ink-soft font-medium">
+            minimum order: 10 sets (same model/color)
+          </p>
+          <div className="mt-6">
+            <QuotationForm />
+          </div>
         </div>
       ) : null}
     </div>

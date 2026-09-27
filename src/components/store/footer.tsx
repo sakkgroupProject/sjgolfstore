@@ -47,6 +47,7 @@ export function Footer({ categories }: { categories: Cat[] }) {
           <p className="eyebrow text-sand">Customer Service</p>
           <ul className="mt-4 space-y-2.5 text-sm text-white/75">
             <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+            <li><Link href="/custom-orders" className="hover:text-white font-semibold">Custom Orders</Link></li>
             <li><Link href="/track-order" className="hover:text-white">Track Order</Link></li>
             <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
             <li><Link href="/shipping-policy" className="hover:text-white">Shipping Policy</Link></li>

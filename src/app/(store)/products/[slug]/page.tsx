@@ -123,14 +123,14 @@ export default async function ProductPage({ params }: Params) {
             <ProductPurchase
               productId={product.id}
               title={product.title}
-              options={options.map((o) => ({ name: o.name, values: o.values }))}
+              options={options.map((o) => ({ name: o.name, values: typeof o.values === "string" ? JSON.parse(o.values) : o.values }))}
               variants={variants.map((v) => ({
                 id: v.id,
                 title: v.title,
                 sku: v.sku,
                 priceCents: v.priceCents,
                 compareAtCents: v.compareAtCents,
-                options: v.options ?? {},
+                options: (typeof v.options === "string" ? JSON.parse(v.options) : v.options) ?? {},
                 inventoryQty: v.inventoryQty,
                 imageUrl: v.imageUrl,
               }))}

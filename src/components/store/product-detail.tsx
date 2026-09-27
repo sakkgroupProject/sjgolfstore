@@ -142,7 +142,7 @@ export function ProductPurchase({
       if (fallback) setSelected({ ...fallback.options });
       return;
     }
-    setSelected(next);
+    setSelected(match.options);
   };
 
   const add = async (mode: "cart" | "buy") => {

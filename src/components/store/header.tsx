@@ -112,7 +112,7 @@ export function Header({
 
       <header
         className={`sticky top-0 z-50 border-b transition-all duration-300 ${
-          scrolled ? "border-line bg-white/95 shadow-[0_1px_20px_rgba(16,19,17,0.06)] backdrop-blur" : "border-transparent bg-white"
+          scrolled ? "border-line bg-white/95 shadow-[0_1px_20px_rgba(16,19,17,0.06)] backdrop-blur" : "border-line bg-white"
         }`}
       >
         <div className="wrap flex h-16 items-center gap-4 md:h-20">
@@ -166,6 +166,12 @@ export function Header({
                 {c.slug === "golf-balls-12pack" ? "Golf Balls" : c.name.replace(/^Golf /, "")}
               </Link>
             ))}
+            <Link
+              href="/custom-orders"
+              className="py-2 text-[0.8rem] font-medium uppercase tracking-[0.12em] transition hover:text-forest whitespace-nowrap"
+            >
+              Custom Orders
+            </Link>
           </nav>
 
           <div className="ml-auto flex items-center gap-1 md:gap-2">
@@ -351,6 +357,12 @@ export function Header({
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href="/custom-orders" className="flex items-center justify-between py-3.5">
+                  <span className="text-lg font-medium">Custom Orders</span>
+                  <span className="text-xs text-moss">Clubs & Events</span>
+                </Link>
+              </li>
             </ul>
             <p className="eyebrow mb-3 mt-8">Help</p>
             <ul className="space-y-3 text-sm">

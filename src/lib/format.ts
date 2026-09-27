@@ -1,9 +1,8 @@
 export function formatMoney(cents: number | null | undefined): string {
   const value = (cents ?? 0) / 100;
-  return value.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
+  return "$" + value.toLocaleString("en-US", {
     minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 }
 

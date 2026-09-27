@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { eq, sql } from "drizzle-orm";
+import { eq, count, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { categories, products } from "@/db/schema";
 import { PageHeader, Panel } from "@/components/admin/ui";
@@ -11,9 +11,11 @@ export default async function AdminCollections() {
   const rows = await db
     .select({
       category: categories,
-      count: sql<number>`(select count(*) from ${products} where ${products.categoryId} = ${categories.id})::int`,
+      count: count(products.id),
     })
     .from(categories)
+    .leftJoin(products, eq(categories.id, products.categoryId))
+    .groupBy(categories.id)
     .orderBy(categories.sortOrder);
 
   const active = await db.select({ v: sql<number>`count(*)::int` }).from(products).where(eq(products.isActive, true));

@@ -70,7 +70,23 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.12em]">Basic information</h2>
             <div className="grid gap-4">
               <Field label="Product title">
-                <input name="title" defaultValue={values.title} required className="field" />
+                <input
+                  name="title"
+                  defaultValue={values.title}
+                  required
+                  className="field"
+                  onChange={(e) => {
+                    if (!values.id) {
+                      const slugInput = e.target.form?.elements.namedItem("slug") as HTMLInputElement;
+                      if (slugInput) {
+                        slugInput.value = e.target.value
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, "-")
+                          .replace(/(^-|-$)/g, "");
+                      }
+                    }
+                  }}
+                />
               </Field>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="URL handle" hint="Leave blank to auto-generate">
