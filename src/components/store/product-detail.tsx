@@ -24,7 +24,7 @@ export type VariantData = {
  * Gallery
  * ------------------------------------------------------------------ */
 export function ProductGallery({
-  images,
+  images: initialImages,
   videoUrl,
   title,
 }: {
@@ -35,12 +35,29 @@ export function ProductGallery({
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [images, setImages] = useState(initialImages);
 
   const scrollTo = (i: number) => {
     setActive(i);
     const node = trackRef.current?.children[i] as HTMLElement | undefined;
     node?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   };
+
+  useEffect(() => {
+    const handleVariantImage = (e: CustomEvent<string>) => {
+      const url = e.detail;
+      if (!url) return;
+      const idx = images.findIndex((img) => img.url === url);
+      if (idx !== -1) {
+        scrollTo(idx);
+      } else {
+        setImages((prev) => [{ url, alt: title }, ...prev]);
+        scrollTo(0);
+      }
+    };
+    window.addEventListener("variantImageSelected", handleVariantImage as EventListener);
+    return () => window.removeEventListener("variantImageSelected", handleVariantImage as EventListener);
+  }, [images, title]);
 
   return (
     <div className="lg:flex lg:flex-row-reverse lg:gap-6">
@@ -131,7 +148,10 @@ export function ProductPurchase({
 
   useEffect(() => {
     setError("");
-  }, [selected]);
+    if (variant?.imageUrl) {
+      window.dispatchEvent(new CustomEvent("variantImageSelected", { detail: variant.imageUrl }));
+    }
+  }, [selected, variant]);
 
   const select = (name: string, value: string) => {
     const next = { ...selected, [name]: value };

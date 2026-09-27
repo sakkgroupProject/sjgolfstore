@@ -85,7 +85,7 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
         </p>
         <Link
           href={`/products/${product.slug}`}
-          className="btn btn-outline mt-4 w-full py-3 text-[0.68rem] opacity-90 transition group-hover:opacity-100"
+          className="btn btn-outline mt-auto w-full py-3 text-[0.68rem] opacity-90 transition group-hover:opacity-100"
         >
           View Product
         </Link>
