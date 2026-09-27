@@ -13,7 +13,7 @@ type Suggestion = {
   categories: { slug: string; name: string }[];
 };
 
-const PRIMARY = ["golf-clubs", "golf-balls", "golf-bags", "golf-apparel", "golf-accessories"];
+const PRIMARY = ["caps", "golf-balls-12pack", "putter-covers"];
 
 export function Header({
   categories,
@@ -91,7 +91,7 @@ export function Header({
     };
   }, [mobileOpen]);
 
-  const navItems = categories.filter((c) => PRIMARY.includes(c.slug));
+  const navItems = PRIMARY.map((slug) => categories.find((c) => c.slug === slug)).filter(Boolean) as NavCategory[];
 
   return (
     <>
@@ -161,17 +161,11 @@ export function Header({
               <Link
                 key={c.slug}
                 href={`/${c.slug}`}
-                className="py-2 text-[0.8rem] font-medium uppercase tracking-[0.12em] transition hover:text-forest"
+                className="py-2 text-[0.8rem] font-medium uppercase tracking-[0.12em] transition hover:text-forest whitespace-nowrap"
               >
-                {c.name.replace(/^Golf /, "")}
+                {c.slug === "golf-balls-12pack" ? "Golf Balls" : c.name.replace(/^Golf /, "")}
               </Link>
             ))}
-            <Link
-              href="/golf-gloves"
-              className="py-2 text-[0.8rem] font-medium uppercase tracking-[0.12em] transition hover:text-forest"
-            >
-              Gloves
-            </Link>
           </nav>
 
           <div className="ml-auto flex items-center gap-1 md:gap-2">

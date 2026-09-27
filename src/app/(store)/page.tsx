@@ -56,180 +56,144 @@ export default async function HomePage() {
           />
         </div>
         <div className="relative z-10 w-full bg-paper-warm px-5 py-8 text-ink md:absolute md:bottom-[15%] md:left-[8%] md:w-[42%] md:max-w-[27rem] md:bg-transparent md:p-0">
-          <h1 className="text-2xl font-bold leading-tight md:text-3xl">FUN. FUNCTION. GOLF.</h1>
-          <p className="mt-2 max-w-[22rem] text-sm leading-snug md:text-sm">
+          <h1 className="text-2xl font-bold leading-tight md:text-xl lg:text-2xl xl:text-[1.75rem] 2xl:text-3xl">FUN. FUNCTION. GOLF.</h1>
+          <p className="mt-2 max-w-[22rem] text-sm leading-snug md:mt-1 lg:mt-1 xl:mt-2 md:text-[0.7rem] lg:text-xs xl:text-[0.8rem] 2xl:text-sm">
             Quality golf accessories and original inventions designed to make the game more enjoyable.
           </p>
           <Link
             href="/shop"
-            className="mt-5 inline-flex bg-[#2f7d1e] px-7 py-3 text-xs font-bold tracking-wide text-white transition hover:bg-[#256617] md:mt-4 md:px-10 md:py-3.5"
+            className="mt-5 inline-flex bg-[#2f7d1e] px-7 py-3 text-xs font-bold tracking-wide text-white transition hover:bg-[#256617] md:mt-2 lg:mt-3 xl:mt-4 md:px-4 lg:px-6 xl:px-8 2xl:px-10 md:py-1.5 lg:py-2 xl:py-2.5 2xl:py-3.5 md:text-[0.6rem] lg:text-[0.65rem] xl:text-xs"
           >
             SHOP NOW
           </Link>
-          <p className="mt-2 text-[0.65rem] text-ink">HELP!® is a registered trademark</p>
+          <p className="mt-2 text-[0.65rem] text-ink md:mt-1 lg:mt-1.5 md:text-[0.5rem] lg:text-[0.55rem] 2xl:text-[0.65rem] text-white">HELP!® is a registered trademark</p>
         </div>
       </section>
 
       {/* ---------------- FEATURED CATEGORIES ---------------- */}
-      <section className="wrap py-16 md:py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">Featured Categories</p>
-            <h2 className="mt-3 text-3xl md:text-[2.6rem]">Shop by category</h2>
+      <section className="py-16 md:py-20 overflow-hidden">
+        <div className="wrap">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow">Featured Categories</p>
+              <h2 className="mt-3 text-3xl md:text-[2.6rem]">Shop by category</h2>
+            </div>
+            <Link href="/shop" className="text-xs font-semibold uppercase tracking-[0.18em] text-forest underline decoration-line underline-offset-[6px]">
+              View everything →
+            </Link>
           </div>
-          <Link href="/shop" className="text-xs font-semibold uppercase tracking-[0.18em] text-forest underline decoration-line underline-offset-[6px]">
-            View everything →
-          </Link>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.slice(0, 4).map((c) => (
-            <Link key={c.id} href={`/${c.slug}`} className="group relative block aspect-[4/5] overflow-hidden bg-paper-warm">
-              <Image
-                src={c.imageUrl}
-                alt={c.name}
-                fill
-                sizes="(max-width: 640px) 100vw, 25vw"
-                className="object-cover transition-transform duration-[900ms] group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                <p className="text-[0.65rem] uppercase tracking-[0.2em] text-sand">{c.tagline}</p>
-                <h3 className="mt-1.5 text-xl">{c.name}</h3>
-                <span className="mt-3 inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  Shop now →
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.slice(4).map((c) => (
-            <Link
-              key={c.id}
-              href={`/${c.slug}`}
-              className="group flex items-center justify-between border border-line px-5 py-5 transition hover:border-forest hover:bg-paper"
-            >
-              <span>
-                <span className="block text-[0.95rem] font-semibold">{c.name}</span>
-                <span className="mt-0.5 block text-xs text-ink-soft">{c.tagline}</span>
-              </span>
-              <span className="text-moss transition-transform group-hover:translate-x-1">→</span>
-            </Link>
-          ))}
+        {/* Scrollable Container */}
+        <div className="mt-10 max-w-7xl mx-auto">
+          <div className="flex gap-4 sm:gap-5 overflow-x-auto pb-8 pt-2 px-4 sm:px-8 lg:px-12 snap-x snap-mandatory custom-scrollbar" style={{ scrollPaddingLeft: "1rem" }}>
+            {categories.map((c) => (
+              <Link key={c.id} href={`/${c.slug}`} className="group relative block aspect-[4/5] w-[180px] sm:w-[220px] lg:w-[16vw] flex-none snap-start overflow-hidden bg-paper-warm shadow-sm">
+                <Image
+                  src={c.imageUrl}
+                  alt={c.name}
+                  fill
+                  sizes="(max-width: 640px) 180px, (max-width: 1024px) 220px, 16vw"
+                  className="object-cover transition-transform duration-[900ms] group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
+                <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                  <p className="text-[0.65rem] uppercase tracking-[0.2em] text-sand">{c.tagline || c.name}</p>
+                  <h3 className="mt-1.5 text-xl font-medium tracking-wide">{c.name}</h3>
+                  <span className="mt-4 inline-flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.18em] opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1">
+                    Shop now →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ---------------- FEATURED PRODUCTS ---------------- */}
-      <section className="bg-paper py-16 md:py-20">
+      <section className="border-t border-line bg-white py-16 md:py-20">
         <div className="wrap">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="eyebrow">Handpicked</p>
               <h2 className="mt-3 text-3xl md:text-[2.6rem]">Featured products</h2>
             </div>
-            <Link href="/shop" className="text-xs font-semibold uppercase tracking-[0.18em] text-forest underline decoration-line underline-offset-[6px]">
-              Shop all →
+            <Link href="/shop?sort=featured" className="text-xs font-semibold uppercase tracking-[0.18em] text-forest underline decoration-line underline-offset-[6px]">
+              See all featured →
             </Link>
           </div>
           <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-4">
-            {featured.items.map((p, i) => (
-              <ProductCard key={p.id} product={p} priority={i < 4} />
+            {featured.items.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ---------------- VALUE PROPOSITION ---------------- */}
-      <section className="wrap py-16 md:py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">Value Proposition</p>
-          <h2 className="mt-3 text-3xl md:text-[2.6rem]">{valueProp?.title ?? "Why shop SJ Golf?"}</h2>
-        </div>
-        <div className="mt-12 grid gap-10 md:grid-cols-3">
-          {[
-            { icon: "flag", title: valueProp?.data.item1Title ?? "Premium Gear", body: valueProp?.data.item1Body ?? "" },
-            { icon: "box", title: valueProp?.data.item2Title ?? "Fast U.S. Shipping", body: valueProp?.data.item2Body ?? "" },
-            { icon: "handshake", title: valueProp?.data.item3Title ?? "Trusted Service", body: valueProp?.data.item3Body ?? "" },
-          ].map((item) => (
-            <div key={item.title} className="text-center">
-              <div className="mx-auto grid size-14 place-items-center rounded-full border border-line bg-paper text-forest"><ValueIcon type={item.icon} /></div>
-              <h3 className="mt-5 text-lg">{item.title}</h3>
-              <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-ink-soft">{item.body}</p>
+      {/* ---------------- BEST SELLERS ---------------- */}
+
+
+      {/* ---------------- VALUE PROPS ---------------- */}
+      <section className="border-t border-line bg-paper-warm py-16 md:py-24">
+        <div className="wrap text-center">
+          <p className="eyebrow">{valueProp?.eyebrow ?? "Why shop SJ Golf?"}</p>
+          <h2 className="mt-4 text-3xl md:text-4xl">{valueProp?.title ?? "Premium Gear & Trusted Service"}</h2>
+          <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+            <div className="flex flex-col items-center">
+              <span className="grid size-12 place-items-center rounded-full bg-forest text-white">
+                <ValueIcon type="box" />
+              </span>
+              <h3 className="mt-5 text-lg font-semibold">Premium Gear</h3>
+              <p className="mt-2 max-w-[16rem] text-sm text-ink-soft">Tour-level equipment, vetted by our fitting team.</p>
             </div>
-          ))}
+            <div className="flex flex-col items-center">
+              <span className="grid size-12 place-items-center rounded-full bg-forest text-white">
+                <ValueIcon type="truck" />
+              </span>
+              <h3 className="mt-5 text-lg font-semibold">Fast U.S. Shipping</h3>
+              <p className="mt-2 max-w-[16rem] text-sm text-ink-soft">Orders over $100 ship free, most leave same day.</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="grid size-12 place-items-center rounded-full bg-forest text-white">
+                <ValueIcon type="handshake" />
+              </span>
+              <h3 className="mt-5 text-lg font-semibold">Trusted Service</h3>
+              <p className="mt-2 max-w-[16rem] text-sm text-ink-soft">Real golfers answer the phone. 30-day returns.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ---------------- STORY / IMAGE + TEXT ---------------- */}
-      <section className="border-y border-line bg-paper-warm">
-        <div className="wrap grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
-          <div className="relative aspect-[4/5] overflow-hidden lg:aspect-[5/5]">
-            {story?.imageUrl ? (
-              <Image src={story.imageUrl} alt="Golfer mid swing" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
-            ) : null}
+      {/* ---------------- STORY ---------------- */}
+      <section className="bg-white py-16 md:py-24">
+        <div className="wrap grid gap-10 lg:grid-cols-2 lg:gap-20">
+          <div className="relative aspect-square w-full bg-paper-warm overflow-hidden">
+            <Image src="/banner.avif" alt="SJ Golf Store" fill className="object-cover" />
           </div>
-          <div>
+          <div className="flex flex-col justify-center">
             <p className="eyebrow">{story?.eyebrow ?? "Our Story"}</p>
-            <h2 className="mt-3 text-3xl leading-tight md:text-[2.6rem]">{story?.title ?? "Built by golfers, for golfers"}</h2>
-            <p className="mt-5 text-[1.05rem] leading-relaxed text-ink-soft">{story?.body}</p>
-            <ul className="mt-8 space-y-3 border-t border-line pt-6 text-sm">
-              {[
-                "Every club hand-inspected before it ships",
-                "Free expert fitting advice on any order",
-                "Authorized dealer — full manufacturer warranty",
-              ].map((line) => (
-                <li key={line} className="flex items-start gap-3">
-                  <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-forest" />
-                  <span className="text-ink-soft">{line}</span>
-                </li>
-              ))}
-            </ul>
-            <Link href={story?.ctaHref || "/shop"} className="btn btn-primary mt-8">
-              {story?.ctaLabel || "Shop All Equipment"}
+            <h2 className="mt-4 text-3xl md:text-4xl">{story?.title ?? "Built by golfers, for golfers"}</h2>
+            <div className="prose prose-sm mt-6 text-ink-soft" dangerouslySetInnerHTML={{ __html: story?.body ?? "<p>SJ Golf Store started in a 400 square foot shop in Orlando with one fitting bay and a simple idea: sell the gear we actually play. Today we stock the full line of clubs, balls, bags and apparel — and we still fit every order like it is going in our own bag.</p><ul><li>Every club hand-inspected before it ships</li><li>Free expert fitting advice on any order</li><li>Authorized dealer — full manufacturer warranty</li></ul>" }} />
+            <Link href="/shop" className="btn btn-primary mt-8 self-start">
+              Shop All Equipment
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ---------------- GOLF COLLECTIONS ---------------- */}
-      <section className="wrap py-16 md:py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+      {/* ---------------- NEWSLETTER ---------------- */}
+      <section className="bg-forest text-white">
+        <div className="wrap grid gap-10 py-16 md:grid-cols-2 md:py-20">
           <div>
-            <p className="eyebrow">Golf Collections</p>
-            <h2 className="mt-3 text-3xl md:text-[2.6rem]">Eight ways to build your bag</h2>
+            <p className="eyebrow text-sand">{newsletter?.eyebrow ?? "Newsletter"}</p>
+            <h2 className="mt-3 text-3xl md:text-[2.6rem]">{newsletter?.title ?? "STAY IN THE GAME"}</h2>
+            <p className="mt-4 max-w-md text-white/75">{newsletter?.subtitle}</p>
+          </div>
+          <div className="md:pt-10">
+            <NewsletterForm source="homepage" variant="dark" />
           </div>
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {[
-            { cat: categories[0], img: categories[0]?.imageUrl, span: "lg:col-span-2 lg:row-span-2 aspect-[4/3] lg:aspect-auto" },
-            { cat: categories[1], img: categories[1]?.imageUrl, span: "" },
-            { cat: categories[3], img: categories[3]?.imageUrl, span: "" },
-            { cat: categories[5], img: categories[5]?.imageUrl, span: "" },
-            { cat: categories[6], img: categories[6]?.imageUrl, span: "" },
-          ].map(({ cat, img, span }) =>
-            cat ? (
-              <Link
-                key={cat.id}
-                href={`/${cat.slug}`}
-                className={`group relative overflow-hidden bg-paper-warm ${span}`}
-              >
-                <div className="relative h-full min-h-[13rem] w-full">
-                  <Image src={img} alt={cat.name} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition-transform duration-[900ms] group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-6">
-                    <h3 className="text-xl text-white">{cat.name}</h3>
-                    <p className="mt-1 text-xs uppercase tracking-[0.16em] text-white/65">{cat.tagline}</p>
-                  </div>
-                </div>
-              </Link>
-            ) : null,
-          )}
-        </div>
       </section>
-
-      {/* ---------------- BEST SELLERS ---------------- */}
       <section className="border-t border-line bg-white py-16 md:py-20">
         <div className="wrap">
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -245,20 +209,6 @@ export default async function HomePage() {
             {bestSellers.items.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------- NEWSLETTER ---------------- */}
-      <section className="bg-forest text-white">
-        <div className="wrap grid gap-10 py-16 md:grid-cols-2 md:py-20">
-          <div>
-            <p className="eyebrow text-sand">{newsletter?.eyebrow ?? "Newsletter"}</p>
-            <h2 className="mt-3 text-3xl md:text-[2.6rem]">{newsletter?.title ?? "STAY IN THE GAME"}</h2>
-            <p className="mt-4 max-w-md text-white/75">{newsletter?.subtitle}</p>
-          </div>
-          <div className="md:pt-10">
-            <NewsletterForm source="homepage" variant="dark" />
           </div>
         </div>
       </section>
