@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { saveProductAction } from "@/app/actions/admin";
@@ -8,7 +9,7 @@ import { ImageKitUploadButton } from "./imagekit-upload";
 import { Field } from "./ui";
 
 type Category = { id: number; name: string };
-type VariantRow = { title: string; sku: string; price: string; stock: number; imageUrl?: string };
+type VariantRow = { title: string; sku: string; price: string; stock: number; imageUrl?: string; options?: Record<string, string> };
 
 export type ProductFormValues = {
   id?: number;
@@ -42,22 +43,34 @@ export type ProductFormValues = {
 };
 
 function combosOf(options: { name: string; values: string }[]): Record<string, string>[] {
-  return options.reduce<Record<string, string>[]>(
+  const validOptions = options
+    .map((option) => ({
+      name: option.name.trim(),
+      values: option.values.split(",").map((value) => value.trim()).filter(Boolean),
+    }))
+    .filter((option) => option.name && option.values.length);
+
+  return validOptions.reduce<Record<string, string>[]>(
     (acc, opt) =>
       acc.flatMap((prev) =>
-        opt.values
-          .split(",")
-          .map((v) => v.trim())
-          .filter(Boolean)
-          .map((value) => ({ ...prev, [opt.name]: value })),
+        opt.values.map((value) => ({ ...prev, [opt.name]: value })),
       ),
     [{}],
   );
 }
 
+function matchesVariantOptions(variant: VariantRow, combo: Record<string, string>): boolean {
+  const variantOptions = variant.options ?? {};
+  return Object.keys(variantOptions).length === Object.keys(combo).length &&
+    Object.entries(combo).every(([name, value]) => variantOptions[name] === value);
+}
+
 export function ProductForm({ categories, values }: { categories: Category[]; values: ProductFormValues }) {
   const [options, setOptions] = useState(values.options.length ? values.options : []);
-  const [variantEdits, setVariantEdits] = useState<Record<number, { sku?: string; price?: string; stock?: string; imageUrl?: string }>>({});
+  const [variantEdits, setVariantEdits] = useState<Record<string, { sku?: string; price?: string; stock?: string; imageUrl?: string }>>({});
+  const [primaryProductImage, setPrimaryProductImage] = useState(
+    () => (values.images || "").split(/\r?\n/).map((url) => url.trim()).find(Boolean) ?? "",
+  );
 
   const combos = useMemo(() => combosOf(options), [options]);
 
@@ -124,7 +137,14 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
           <section className="rounded-sm border border-[#e2e6e2] bg-white p-5">
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.12em]">Media</h2>
             <Field label="Product images" hint="Upload images and remove any you do not want.">
-              <MediaUploadField name="images" initialUrls={(values.images || "").split(/\r?\n/).map((value) => value.trim()).filter(Boolean)} multiple folder="/products" buttonLabel="Upload product images" />
+              <MediaUploadField
+                name="images"
+                initialUrls={(values.images || "").split(/\r?\n/).map((value) => value.trim()).filter(Boolean)}
+                multiple
+                folder="/products"
+                buttonLabel="Upload product images"
+                onUrlsChange={(urls) => setPrimaryProductImage(urls[0] ?? "")}
+              />
             </Field>
             <div className="mt-4">
               <Field label="Video URL (optional)">
@@ -193,7 +213,7 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
               ) : null}
             </div>
 
-            {combos.length > 1 || (combos[0] && Object.keys(combos[0]).length) ? (
+            {combos.length ? (
               <div className="mt-5 overflow-x-auto border-t border-[#eef1ee] pt-4">
                 <table className="w-full min-w-[36rem] text-sm">
                   <thead>
@@ -206,43 +226,53 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#f1f3f1]">
-                    {combos.map((combo, i) => (
-                      <tr key={i}>
+                    {combos.map((combo, i) => {
+                      const variantKey = JSON.stringify(combo);
+                      const savedVariant = values.variants.find((variant) => matchesVariantOptions(variant, combo));
+                      const imageUrl = variantEdits[variantKey]?.imageUrl || savedVariant?.imageUrl || primaryProductImage;
+                      return (
+                      <tr key={variantKey}>
                         <td className="py-2 pr-3 font-medium">{Object.values(combo).join(" / ") || "Default"}</td>
                         <td className="py-2 pr-3">
                           <div className="flex gap-2 items-center">
                             <input
                               type="hidden"
                               name="variantImageUrl"
-                              value={variantEdits[i]?.imageUrl ?? values.variants[i]?.imageUrl ?? ""}
+                              value={imageUrl}
                               readOnly
                             />
-                            {variantEdits[i]?.imageUrl || values.variants[i]?.imageUrl ? (
-                                <img src={variantEdits[i]?.imageUrl ?? values.variants[i]?.imageUrl} alt="" className="w-8 h-8 object-cover rounded shadow-sm border border-black/10" />
+                            {imageUrl ? (
+                                <Image
+                                  src={imageUrl}
+                                  alt={`${Object.values(combo).join(" / ") || "Variant"} image`}
+                                  width={64}
+                                  height={64}
+                                  className="size-16 shrink-0 rounded-sm border border-black/10 object-cover shadow-sm"
+                                />
                             ) : (
-                                <div className="w-8 h-8 bg-paper rounded border border-dashed border-black/20" />
+                                <div className="size-16 shrink-0 rounded-sm border border-dashed border-black/20 bg-paper" />
                             )}
                             <ImageKitUploadButton
                               targetName=""
                               buttonLabel="Upload"
                               folder="/products"
-                              onUrlsUploaded={(urls) => setVariantEdits((v) => ({ ...v, [i]: { ...v[i], imageUrl: urls[0] } }))}
+                              onUrlsUploaded={(urls) => setVariantEdits((v) => ({ ...v, [variantKey]: { ...v[variantKey], imageUrl: urls[0] } }))}
                             />
                           </div>
                         </td>
                         <td className="py-2 pr-3">
                           <input
                             name="variantSku"
-                            defaultValue={variantEdits[i]?.sku ?? values.variants[i]?.sku ?? (values.sku ? `${values.sku}-${i + 1}` : "")}
-                            onChange={(e) => setVariantEdits((v) => ({ ...v, [i]: { ...v[i], sku: e.target.value } }))}
+                            defaultValue={variantEdits[variantKey]?.sku ?? savedVariant?.sku ?? (values.sku ? `${values.sku}-${i + 1}` : "")}
+                            onChange={(e) => setVariantEdits((v) => ({ ...v, [variantKey]: { ...v[variantKey], sku: e.target.value } }))}
                             className="field py-1.5 text-xs"
                           />
                         </td>
                         <td className="py-2 pr-3">
                           <input
                             name="variantPrice"
-                            defaultValue={variantEdits[i]?.price ?? values.variants[i]?.price ?? values.price}
-                            onChange={(e) => setVariantEdits((v) => ({ ...v, [i]: { ...v[i], price: e.target.value } }))}
+                            defaultValue={variantEdits[variantKey]?.price ?? savedVariant?.price ?? values.price}
+                            onChange={(e) => setVariantEdits((v) => ({ ...v, [variantKey]: { ...v[variantKey], price: e.target.value } }))}
                             className="field py-1.5 text-xs"
                             inputMode="decimal"
                           />
@@ -250,14 +280,15 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
                         <td className="py-2 pr-3">
                           <input
                             name="variantStock"
-                            defaultValue={variantEdits[i]?.stock ?? String(values.variants[i]?.stock ?? 10)}
-                            onChange={(e) => setVariantEdits((v) => ({ ...v, [i]: { ...v[i], stock: e.target.value } }))}
+                            defaultValue={variantEdits[variantKey]?.stock ?? String(savedVariant?.stock ?? 10)}
+                            onChange={(e) => setVariantEdits((v) => ({ ...v, [variantKey]: { ...v[variantKey], stock: e.target.value } }))}
                             className="field w-20 py-1.5 text-xs"
                             inputMode="numeric"
                           />
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

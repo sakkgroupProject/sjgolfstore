@@ -363,7 +363,7 @@ export async function seedDatabase() {
           options: combo,
           inventoryQty: stockFor(index, vi),
           weightGrams: p.weight ?? 500,
-          imageUrl: imgs[vi % imgs.length]?.url ?? "",
+          imageUrl: imgs[0]?.url ?? "",
           position: vi,
         };
       }),

@@ -172,6 +172,25 @@ export async function saveProductAction(formData: FormData) {
         };
       }),
     );
+  } else {
+    const variantSkus = formData.getAll("variantSku").map(String);
+    const variantPrices = formData.getAll("variantPrice").map(String);
+    const variantStock = formData.getAll("variantStock").map(String);
+    const variantImageUrls = formData.getAll("variantImageUrl").map(String);
+
+    await db.insert(variants).values({
+      productId,
+      title: "Standard",
+      sku: variantSkus[0] || `${payload.sku}-1`,
+      priceCents: variantPrices[0] ? dollarsToCents(variantPrices[0]) : payload.priceCents,
+      costCents: payload.costCents,
+      compareAtCents: payload.compareAtCents,
+      options: {},
+      inventoryQty: Number(variantStock[0] ?? 10) || 0,
+      weightGrams: payload.weightGrams,
+      imageUrl: variantImageUrls[0] || images[0]?.url || "",
+      position: 0,
+    });
   }
 
   await log("admin", id ? "Updated Product" : "Created Product", title, `Price: $${(payload.priceCents / 100).toFixed(2)}`);

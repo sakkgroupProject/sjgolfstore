@@ -110,9 +110,12 @@ export function ProductGallery({
  * Purchase panel
  * ------------------------------------------------------------------ */
 function pickVariant(variants: VariantData[], selected: Record<string, string>): VariantData | null {
-  const exact = variants.find((v) => Object.entries(selected).every(([k, val]) => v.options[k] === val));
-  if (exact) return exact;
-  return null;
+  const selectedEntries = Object.entries(selected);
+  return variants.find((variant) => {
+    const optionEntries = Object.entries(variant.options ?? {});
+    return optionEntries.length === selectedEntries.length &&
+      selectedEntries.every(([name, value]) => variant.options[name] === value);
+  }) ?? null;
 }
 
 export function ProductPurchase({
@@ -147,22 +150,27 @@ export function ProductPurchase({
   const maxQty = variant?.inventoryQty ?? 10;
 
   useEffect(() => {
-    setError("");
     if (variant?.imageUrl) {
       window.dispatchEvent(new CustomEvent("variantImageSelected", { detail: variant.imageUrl }));
     }
   }, [selected, variant]);
 
   const select = (name: string, value: string) => {
-    const next = { ...selected, [name]: value };
-    const match = pickVariant(variants, next);
-    if (!match) {
-      // choose the first variant that keeps the new value but is in stock
-      const fallback = variants.find((v) => v.options[name] === value && v.inventoryQty > 0) ?? variants.find((v) => v.options[name] === value);
-      if (fallback) setSelected({ ...fallback.options });
-      return;
+    const candidates = variants.filter((candidate) => candidate.options[name] === value);
+    const compatible = candidates.find((candidate) =>
+      Object.entries(selected).every(([optionName, selectedValue]) =>
+        optionName === name || candidate.options[optionName] === selectedValue,
+      ),
+    );
+    const nextVariant = compatible ??
+      candidates.find((candidate) => candidate.inventoryQty > 0) ??
+      candidates[0];
+
+    if (nextVariant) {
+      setError("");
+      setSelected({ ...nextVariant.options });
     }
-    setSelected(match.options);
+    else setError(`The ${value} option is unavailable.`);
   };
 
   const add = async (mode: "cart" | "buy") => {
@@ -234,6 +242,8 @@ export function ProductPurchase({
                     return (
                       <button
                         key={v}
+                        type="button"
+                        aria-pressed={isActive}
                         onClick={() => select(opt.name, v)}
                         className={`min-w-[3.4rem] border px-4 py-3 text-sm font-medium transition ${
                           isActive
@@ -280,15 +290,17 @@ export function ProductPurchase({
 
       <div className="mt-6 space-y-3">
         <button
+          type="button"
           onClick={() => add("cart")}
-          disabled={!inStock || pending !== null}
+          disabled={!variant || !inStock || pending !== null}
           className="btn btn-primary w-full py-4"
         >
           {pending === "cart" ? "Adding…" : inStock ? "Add to Cart" : "Out of Stock"}
         </button>
         <button
+          type="button"
           onClick={() => add("buy")}
-          disabled={!inStock || pending !== null}
+          disabled={!variant || !inStock || pending !== null}
           className="btn btn-dark w-full py-4"
         >
           {pending === "buy" ? "Redirecting…" : "Buy Now"}
@@ -301,7 +313,7 @@ export function ProductPurchase({
           <p className="truncate text-xs text-ink-soft">{Object.values(selected).join(" / ") || title}</p>
           <p className="text-sm font-semibold">{formatMoney(price * quantity)}</p>
         </div>
-        <button onClick={() => add("cart")} disabled={!inStock || pending !== null} className="btn btn-primary px-6 py-3.5">
+        <button type="button" onClick={() => add("cart")} disabled={!variant || !inStock || pending !== null} className="btn btn-primary px-6 py-3.5">
           {inStock ? "Add to Cart" : "Sold Out"}
         </button>
       </div>

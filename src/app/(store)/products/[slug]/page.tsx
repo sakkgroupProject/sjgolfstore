@@ -5,6 +5,7 @@ import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import { getProductBySlug, getRelatedProducts } from "@/lib/catalog";
+import { normalizeOptionValues, normalizeVariantOptions } from "@/lib/variant-options";
 import { Accordion, ProductGallery, ProductPurchase } from "@/components/store/product-detail";
 import { ProductCard, Stars } from "@/components/store/product-card";
 import { formatMoney } from "@/lib/format";
@@ -43,6 +44,10 @@ export default async function ProductPage({ params }: Params) {
   const rating = product.reviewCount ? Math.round((product.ratingSum / product.reviewCount) * 10) / 10 : 0;
   const onSale = Boolean(product.compareAtCents && product.compareAtCents > product.priceCents);
   const totalStock = variants.reduce((s, v) => s + v.inventoryQty, 0);
+  const optionDefinitions = options.map((option) => ({
+    name: option.name,
+    values: normalizeOptionValues(option.values),
+  }));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -123,14 +128,14 @@ export default async function ProductPage({ params }: Params) {
             <ProductPurchase
               productId={product.id}
               title={product.title}
-              options={options.map((o) => ({ name: o.name, values: typeof o.values === "string" ? JSON.parse(o.values) : o.values }))}
+              options={optionDefinitions}
               variants={variants.map((v) => ({
                 id: v.id,
                 title: v.title,
                 sku: v.sku,
                 priceCents: v.priceCents,
                 compareAtCents: v.compareAtCents,
-                options: (typeof v.options === "string" ? JSON.parse(v.options) : v.options) ?? {},
+                options: normalizeVariantOptions(v.options, v.title, optionDefinitions),
                 inventoryQty: v.inventoryQty,
                 imageUrl: v.imageUrl,
               }))}

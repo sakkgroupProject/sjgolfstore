@@ -10,26 +10,30 @@ export function MediaUploadField({
   multiple = false,
   folder = "/uploads",
   buttonLabel = "Upload image",
+  onUrlsChange,
 }: {
   name: string;
   initialUrls?: string[];
   multiple?: boolean;
   folder?: string;
   buttonLabel?: string;
+  onUrlsChange?: (urls: string[]) => void;
 }) {
   const [urls, setUrls] = useState<string[]>(() => (initialUrls ?? []).filter(Boolean));
 
   const value = useMemo(() => urls.join("\n"), [urls]);
 
   const handleUploaded = (newUrls: string[]) => {
-    setUrls((prev) => {
-      const merged = multiple ? [...prev, ...newUrls] : newUrls;
-      return Array.from(new Set(merged.filter(Boolean)));
-    });
+    const merged = multiple ? [...urls, ...newUrls] : newUrls;
+    const nextUrls = Array.from(new Set(merged.filter(Boolean)));
+    setUrls(nextUrls);
+    onUrlsChange?.(nextUrls);
   };
 
   const removeUrl = (index: number) => {
-    setUrls((prev) => prev.filter((_, i) => i !== index));
+    const nextUrls = urls.filter((_, i) => i !== index);
+    setUrls(nextUrls);
+    onUrlsChange?.(nextUrls);
   };
 
   return (

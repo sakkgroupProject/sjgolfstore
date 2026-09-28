@@ -22,7 +22,7 @@ function applySecurityHeaders(response: NextResponse, request: NextRequest): Nex
     `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: blob: https://images.pexels.com https://cdn.pixabay.com",
+    "img-src 'self' data: blob: https://images.pexels.com https://cdn.pixabay.com https://ik.imagekit.io",
     "media-src 'self' blob:",
     "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
     "frame-ancestors 'none'",

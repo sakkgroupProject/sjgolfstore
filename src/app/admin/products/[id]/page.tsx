@@ -4,6 +4,7 @@ import { asc, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { categories, inventoryHistory, productOptions, products, variants } from "@/db/schema";
 import { centsToInput, formatDateTime } from "@/lib/format";
+import { normalizeOptionValues, normalizeVariantOptions } from "@/lib/variant-options";
 import { ProductForm } from "@/components/admin/product-form";
 import { PageHeader, Panel, Table } from "@/components/admin/ui";
 
@@ -29,6 +30,11 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     .where(eq(inventoryHistory.productName, product.title))
     .orderBy(desc(inventoryHistory.id))
     .limit(6);
+
+  const optionDefinitions = opts.map((option) => ({
+    name: option.name,
+    values: normalizeOptionValues(option.values),
+  }));
 
   return (
     <div>
@@ -72,13 +78,14 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           isActive: product.isActive,
           seoTitle: product.seoTitle,
           seoDescription: product.seoDescription,
-          options: opts.map((o) => ({ name: o.name, values: o.values.join(", ") })),
+          options: optionDefinitions.map((option) => ({ name: option.name, values: option.values.join(", ") })),
           variants: vars.map((v) => ({
             title: v.title,
             sku: v.sku,
             price: centsToInput(v.priceCents),
             stock: v.inventoryQty,
             imageUrl: v.imageUrl,
+            options: normalizeVariantOptions(v.options, v.title, optionDefinitions),
           })),
         }}
       />
