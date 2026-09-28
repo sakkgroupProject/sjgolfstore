@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { saveProductAction } from "@/app/actions/admin";
 import { MediaUploadField } from "./media-upload-field";
+import { ImageKitUploadButton } from "./imagekit-upload";
 import { Field } from "./ui";
 
 type Category = { id: number; name: string };
-type VariantRow = { title: string; sku: string; price: string; stock: number };
+type VariantRow = { title: string; sku: string; price: string; stock: number; imageUrl?: string };
 
 export type ProductFormValues = {
   id?: number;
@@ -56,7 +57,7 @@ function combosOf(options: { name: string; values: string }[]): Record<string, s
 
 export function ProductForm({ categories, values }: { categories: Category[]; values: ProductFormValues }) {
   const [options, setOptions] = useState(values.options.length ? values.options : []);
-  const [variantEdits, setVariantEdits] = useState<Record<number, { sku?: string; price?: string; stock?: string }>>({});
+  const [variantEdits, setVariantEdits] = useState<Record<number, { sku?: string; price?: string; stock?: string; imageUrl?: string }>>({});
 
   const combos = useMemo(() => combosOf(options), [options]);
 
@@ -198,6 +199,7 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
                   <thead>
                     <tr className="text-left text-[0.62rem] uppercase tracking-[0.14em] text-ink-soft">
                       <th className="py-2 pr-3">Variant</th>
+                      <th className="py-2 pr-3 w-48">Image</th>
                       <th className="py-2 pr-3">SKU</th>
                       <th className="py-2 pr-3">Price</th>
                       <th className="py-2 pr-3">Stock</th>
@@ -207,6 +209,27 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
                     {combos.map((combo, i) => (
                       <tr key={i}>
                         <td className="py-2 pr-3 font-medium">{Object.values(combo).join(" / ") || "Default"}</td>
+                        <td className="py-2 pr-3">
+                          <div className="flex gap-2 items-center">
+                            <input
+                              type="hidden"
+                              name="variantImageUrl"
+                              value={variantEdits[i]?.imageUrl ?? values.variants[i]?.imageUrl ?? ""}
+                              readOnly
+                            />
+                            {variantEdits[i]?.imageUrl || values.variants[i]?.imageUrl ? (
+                                <img src={variantEdits[i]?.imageUrl ?? values.variants[i]?.imageUrl} alt="" className="w-8 h-8 object-cover rounded shadow-sm border border-black/10" />
+                            ) : (
+                                <div className="w-8 h-8 bg-paper rounded border border-dashed border-black/20" />
+                            )}
+                            <ImageKitUploadButton
+                              targetName=""
+                              buttonLabel="Upload"
+                              folder="/products"
+                              onUrlsUploaded={(urls) => setVariantEdits((v) => ({ ...v, [i]: { ...v[i], imageUrl: urls[0] } }))}
+                            />
+                          </div>
+                        </td>
                         <td className="py-2 pr-3">
                           <input
                             name="variantSku"

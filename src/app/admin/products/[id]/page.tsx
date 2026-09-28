@@ -78,6 +78,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             sku: v.sku,
             price: centsToInput(v.priceCents),
             stock: v.inventoryQty,
+            imageUrl: v.imageUrl,
           })),
         }}
       />

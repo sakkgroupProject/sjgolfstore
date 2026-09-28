@@ -120,6 +120,9 @@ export async function saveProductAction(formData: FormData) {
     .map((name, i) => ({ name: name.trim(), values: optionValues[i] ? optionValues[i].split(",").map((v) => v.trim()).filter(Boolean) : [] }))
     .filter((o) => o.name && o.values.length);
 
+  // FETCH EXISTING VARIANTS TO PRESERVE THEIR IMAGES
+  const existingVariants = await db.select().from(variants).where(eq(variants.productId, productId));
+
   await db.delete(productOptions).where(eq(productOptions.productId, productId));
   await db.delete(variants).where(eq(variants.productId, productId));
 
@@ -134,20 +137,40 @@ export async function saveProductAction(formData: FormData) {
     const variantSkus = formData.getAll("variantSku").map(String);
     const variantPrices = formData.getAll("variantPrice").map(String);
     const variantStock = formData.getAll("variantStock").map(String);
+    const variantImageUrls = formData.getAll("variantImageUrl").map(String);
+
     await db.insert(variants).values(
-      combos.map((combo, vi) => ({
-        productId,
-        title: Object.values(combo).join(" / ") || "Standard",
-        sku: variantSkus[vi] || `${payload.sku}-${vi + 1}`,
-        priceCents: variantPrices[vi] ? dollarsToCents(variantPrices[vi]) : payload.priceCents,
-        costCents: payload.costCents,
-        compareAtCents: payload.compareAtCents,
-        options: combo,
-        inventoryQty: Number(variantStock[vi] ?? 0) || 0,
-        weightGrams: payload.weightGrams,
-        imageUrl: images[0]?.url ?? "",
-        position: vi,
-      })),
+      combos.map((combo, vi) => {
+        const variantTitle = Object.values(combo).join(" / ") || "Standard";
+        
+        // Use the explicitly assigned image URL from the form (if any)
+        let finalImageUrl = variantImageUrls[vi];
+        
+        // If they didn't upload a specific image, try to preserve the old variant's image
+        if (!finalImageUrl) {
+          const oldVariant = existingVariants.find(v => v.title === variantTitle);
+          finalImageUrl = oldVariant?.imageUrl || "";
+        }
+
+        // If STILL no image, fallback to the first image of the product
+        if (!finalImageUrl) {
+          finalImageUrl = images[0]?.url ?? "";
+        }
+
+        return {
+          productId,
+          title: variantTitle,
+          sku: variantSkus[vi] || `${payload.sku}-${vi + 1}`,
+          priceCents: variantPrices[vi] ? dollarsToCents(variantPrices[vi]) : payload.priceCents,
+          costCents: payload.costCents,
+          compareAtCents: payload.compareAtCents,
+          options: combo,
+          inventoryQty: Number(variantStock[vi] ?? 0) || 0,
+          weightGrams: payload.weightGrams,
+          imageUrl: finalImageUrl,
+          position: vi,
+        };
+      }),
     );
   }
 
