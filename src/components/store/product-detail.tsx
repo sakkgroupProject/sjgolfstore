@@ -205,6 +205,8 @@ export function ProductPurchase({
 
       <div className="mt-8 space-y-7">
         {options.map((opt) => {
+          if (opt.values.length <= 1) return null;
+          
           const many = opt.values.length > 6;
           return (
             <div key={opt.name}>
