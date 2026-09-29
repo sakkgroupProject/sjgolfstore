@@ -46,7 +46,7 @@ export default async function HomePage() {
             className="object-contain md:hidden"
           />
           <Image
-            src="/herosectionimage.jpg"
+            src="/herosectionimage.png"
             alt="Help! Golf equipment collection"
             fill
             priority

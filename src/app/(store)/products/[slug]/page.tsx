@@ -9,6 +9,7 @@ import { normalizeOptionValues, normalizeVariantOptions } from "@/lib/variant-op
 import { Accordion, ProductGallery, ProductPurchase } from "@/components/store/product-detail";
 import { ProductCard, Stars } from "@/components/store/product-card";
 import { formatMoney } from "@/lib/format";
+import { RotateCcw, ShieldCheck, Truck, Wrench } from "lucide-react";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -145,10 +146,10 @@ export default async function ProductPage({ params }: Params) {
           </div>
 
           <div className="mt-8 grid gap-3 border-t border-line pt-6 text-xs text-ink-soft sm:grid-cols-2">
-            <p className="flex items-center gap-2"><ShippingIcon /> Free U.S. shipping over $100</p>
-            <p>↩ 30-day returns on unused gear</p>
-            <p>🛡 Authorized dealer warranty</p>
-            <p>🔧 Free expert fitting advice</p>
+            <p className="flex items-center gap-2"><Truck size={16} aria-hidden="true" /> Free U.S. shipping over $100</p>
+            <p className="flex items-center gap-2"><RotateCcw size={16} aria-hidden="true" /> 30-day returns on unused gear</p>
+            <p className="flex items-center gap-2"><ShieldCheck size={16} aria-hidden="true" /> Authorized dealer warranty</p>
+            <p className="flex items-center gap-2"><Wrench size={16} aria-hidden="true" /> Free expert fitting advice</p>
           </div>
         </div>
       </div>
@@ -250,8 +251,4 @@ export default async function ProductPage({ params }: Params) {
       ) : null}
     </>
   );
-}
-
-function ShippingIcon() {
-  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden><path d="M3 6h11v11H3zM14 10h4l3 3v4h-7z" /><circle cx="7" cy="19" r="1.5" /><circle cx="18" cy="19" r="1.5" /></svg>;
 }
