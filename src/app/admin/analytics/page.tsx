@@ -2,7 +2,8 @@ import { desc, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { orderItems, orders, products, users } from "@/db/schema";
 import { formatMoney } from "@/lib/format";
-import { MiniBarChart, PageHeader, Panel, StatCard, Table } from "@/components/admin/ui";
+import { PageHeader, Panel, StatCard, Table } from "@/components/admin/ui";
+import { AdvancedRevenueChart, ConversionFunnelChart } from "./recharts";
 
 export const dynamic = "force-dynamic";
 
@@ -59,24 +60,12 @@ export default async function AdminAnalytics() {
         <StatCard label="Units sold" value={String(Number(units[0]?.v ?? 0))} />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+      <div className="mt-6 grid gap-6 xl:grid-cols-2">
         <Panel title="Revenue by month">
-          <MiniBarChart data={chart} labels={labels} />
+          <AdvancedRevenueChart data={chart} />
         </Panel>
         <Panel title="Conversion funnel">
-          <ul className="space-y-4">
-            {funnel.map((f) => (
-              <li key={f.label}>
-                <div className="flex items-center justify-between text-sm">
-                  <span>{f.label}</span>
-                  <span className="font-semibold">{f.value.toLocaleString()}</span>
-                </div>
-                <div className="mt-1.5 h-2 w-full bg-[#eef1ee]">
-                  <div className="h-full bg-forest" style={{ width: `${f.pct}%` }} />
-                </div>
-              </li>
-            ))}
-          </ul>
+          <ConversionFunnelChart data={funnel} />
         </Panel>
       </div>
 

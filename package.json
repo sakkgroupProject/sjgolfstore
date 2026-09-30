@@ -10,6 +10,7 @@
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
+    "date-fns": "^4.4.0",
     "dotenv": "17.3.1",
     "drizzle-orm": "0.45.2",
     "imagekit": "^6.0.0",
@@ -18,6 +19,7 @@
     "pg": "8.20.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "recharts": "^3.10.1",
     "server-only": "^0.0.1",
     "zod": "^4.6.5"
   },

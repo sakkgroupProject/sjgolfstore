@@ -32,9 +32,16 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
         subtitle={`Placed ${formatDateTime(order.createdAt)} · ${order.email}`}
         breadcrumb={[{ href: "/admin/dashboard", label: "Admin" }, { href: "/admin/orders", label: "Orders" }, { label: order.orderNumber }]}
         actions={
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-3">
             <Badge>{order.paymentStatus}</Badge>
             <Badge>{order.fulfillmentStatus}</Badge>
+            <div className="h-4 w-px bg-black/10 mx-1"></div>
+            <Link target="_blank" href={`/admin/orders/${order.id}/invoice`} className="btn btn-light px-3 py-1.5 text-xs">
+              📄 Print Invoice
+            </Link>
+            <Link target="_blank" href={`/admin/orders/${order.id}/packing-slip`} className="btn btn-light px-3 py-1.5 text-xs">
+              📦 Print Packing Slip
+            </Link>
           </div>
         }
       />
