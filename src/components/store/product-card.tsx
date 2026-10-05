@@ -22,7 +22,7 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
   const onSale = Boolean(product.compareAtCents && product.compareAtCents > product.priceCents);
   return (
     <article className="group relative flex flex-col">
-      <Link href={`/products/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-white">
+      <Link href={`/products/${product.slug}`} className="relative block aspect-square overflow-hidden bg-white">
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}
@@ -44,6 +44,11 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
         ) : null}
 
         <div className="absolute left-0 top-3 flex flex-col gap-1">
+          {(product.title.toLowerCase().includes("set") || product.productType.toLowerCase().includes("set")) ? (
+            <span className="bg-forest px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-white">
+              Set
+            </span>
+          ) : null}
           {onSale ? (
             <span className="bg-forest px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-white">
               Sale

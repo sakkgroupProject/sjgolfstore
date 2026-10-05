@@ -133,7 +133,7 @@ export async function ShopView({
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid grid-cols-2 gap-x-5 gap-y-12">
                 {items.map((p, i) => (
                   <ProductCard key={p.id} product={p} priority={i < 4} />
                 ))}
