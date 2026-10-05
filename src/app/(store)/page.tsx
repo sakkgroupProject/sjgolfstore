@@ -122,7 +122,7 @@ export default async function HomePage() {
               See all featured →
             </Link>
           </div>
-          <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12">
+          <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-4">
             {featured.items.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -232,7 +232,7 @@ export default async function HomePage() {
               See all best sellers →
             </Link>
           </div>
-          <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12">
+          <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-4">
             {bestSellers.items.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
