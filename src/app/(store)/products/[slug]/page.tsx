@@ -151,6 +151,14 @@ export default async function ProductPage({ params }: Params) {
             <p className="flex items-center gap-2"><ShieldCheck size={16} aria-hidden="true" /> Authorized dealer warranty</p>
             <p className="flex items-center gap-2"><Wrench size={16} aria-hidden="true" /> Free expert fitting advice</p>
           </div>
+
+          <div className="mt-8 border border-forest/25 bg-forest/5 p-5 text-center">
+            <h3 className="text-sm font-semibold text-forest mb-2">Need this customized for a club or event?</h3>
+            <p className="text-xs text-ink-soft mb-4">We offer premium logo customization for bulk orders.</p>
+            <Link href="/custom-orders" className="btn btn-dark w-full text-sm py-2.5">
+              Request Custom Quote
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -159,6 +167,20 @@ export default async function ProductPage({ params }: Params) {
           <div>
             <h2 className="text-2xl">Product details</h2>
             <p className="mt-4 whitespace-pre-line text-[0.95rem] leading-relaxed text-ink-soft">{product.description}</p>
+
+            {product.videoUrl ? (
+              <div className="mt-8 relative aspect-video w-full overflow-hidden rounded-sm bg-black/5">
+                <video 
+                  src={product.videoUrl} 
+                  autoPlay 
+                  muted 
+                  loop 
+                  controls 
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : null}
 
             {product.specs?.length ? (
               <div className="mt-8">

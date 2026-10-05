@@ -22,7 +22,7 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
   const onSale = Boolean(product.compareAtCents && product.compareAtCents > product.priceCents);
   return (
     <article className="group relative flex flex-col">
-      <Link href={`/products/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-paper-warm">
+      <Link href={`/products/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-white">
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}

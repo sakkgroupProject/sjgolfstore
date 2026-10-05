@@ -132,6 +132,33 @@ export default async function HomePage() {
 
       {/* ---------------- BEST SELLERS ---------------- */}
 
+      {/* ---------------- PASADA GOLF KICKBACK SPOTLIGHT ---------------- */}
+      <section className="bg-forest text-white py-16 md:py-24">
+        <div className="wrap grid gap-10 lg:grid-cols-2 lg:gap-20 items-center">
+          <div className="flex flex-col justify-center order-2 lg:order-1">
+            <p className="eyebrow text-sand">Product Spotlight</p>
+            <h2 className="mt-4 text-3xl md:text-4xl">The Pasada Golf Kickback</h2>
+            <p className="mt-6 text-white/80 leading-relaxed">
+              Experience the ultimate practice companion. The Pasada Golf Kickback is engineered to deliver perfect ball returns, allowing you to focus entirely on your stroke without breaking your rhythm. Whether you are practicing at home or on the green, its durable, responsive design ensures you get the most out of every session.
+            </p>
+            <Link href="/kick-back" className="btn btn-light mt-8 self-start px-8 py-3">
+              Shop The Kickback
+            </Link>
+          </div>
+          <div className="relative aspect-video w-full rounded-sm overflow-hidden bg-black/20 shadow-2xl order-1 lg:order-2">
+            <video
+              src="/pasadagolfkickback.mp4"
+              autoPlay
+              muted
+              loop
+              controls
+              playsInline
+              className="w-full h-full object-cover"
+              title="Pasada Golf Kickback Demo"
+            />
+          </div>
+        </div>
+      </section>
 
       {/* ---------------- VALUE PROPS ---------------- */}
       <section className="border-t border-line bg-paper-warm py-16 md:py-24">

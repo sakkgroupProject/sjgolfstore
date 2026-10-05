@@ -62,7 +62,7 @@ export function ProductGallery({
   return (
     <div className="lg:flex lg:flex-row-reverse lg:gap-6">
       <div
-        className="relative aspect-square w-full overflow-hidden bg-paper-warm lg:flex-1"
+        className="relative aspect-square w-full overflow-hidden bg-white lg:flex-1"
         onMouseEnter={() => setZoom(true)}
         onMouseLeave={() => setZoom(false)}
       >
@@ -73,7 +73,7 @@ export function ProductGallery({
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 55vw"
-            className={`object-cover transition-transform duration-700 ${zoom ? "scale-[1.35]" : "scale-100"}`}
+            className={`object-contain p-4 transition-transform duration-700 ${zoom ? "scale-[1.15]" : "scale-100"}`}
           />
         ) : null}
         {videoUrl ? (
@@ -87,7 +87,7 @@ export function ProductGallery({
       </div>
 
       <div className="mt-3 lg:mt-0 lg:w-24 lg:shrink-0">
-        <div ref={trackRef} className="hide-scrollbar flex snap-x gap-3 overflow-x-auto lg:flex-col lg:overflow-visible">
+        <div ref={trackRef} className="hide-scrollbar flex snap-x gap-3 overflow-x-auto lg:flex-col lg:max-h-[528px] lg:overflow-y-auto">
           {images.map((img, i) => (
             <button
               key={img.url + i}
@@ -97,7 +97,7 @@ export function ProductGallery({
               }`}
               aria-label={`View image ${i + 1}`}
             >
-              <Image src={img.url} alt="" fill sizes="96px" className="object-cover" />
+              <Image src={img.url} alt="" fill sizes="96px" className="object-contain p-1" />
             </button>
           ))}
         </div>

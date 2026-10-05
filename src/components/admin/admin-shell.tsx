@@ -11,6 +11,7 @@ const NAV: { group: string; items: { href: string; label: string }[] }[] = [
     group: "Orders",
     items: [
       { href: "/admin/orders", label: "All Orders" },
+      { href: "/admin/custom-orders", label: "B2B Custom Orders" },
       { href: "/admin/orders?status=processing", label: "Processing" },
       { href: "/admin/orders?status=shipped", label: "Shipped" },
       { href: "/admin/orders?status=refunded", label: "Refunds" },
