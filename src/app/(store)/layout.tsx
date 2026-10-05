@@ -51,6 +51,7 @@ export default async function StoreLayout({ children }: { children: ReactNode })
         categories={categories.map((c) => ({ slug: c.slug, name: c.name, tagline: c.tagline }))}
         cartCount={totals.itemCount}
         isLoggedIn={Boolean(user)}
+        isAdmin={user?.role === "admin"}
         firstName={user?.firstName ?? ""}
       />
       <main className="min-h-[60vh]">{children}</main>

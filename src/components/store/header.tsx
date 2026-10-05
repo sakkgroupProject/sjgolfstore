@@ -19,11 +19,13 @@ export function Header({
   categories,
   cartCount,
   isLoggedIn,
+  isAdmin,
   firstName,
 }: {
   categories: NavCategory[];
   cartCount: number;
   isLoggedIn: boolean;
+  isAdmin: boolean;
   firstName: string;
 }) {
   const [scrolled, setScrolled] = useState(false);
@@ -213,7 +215,7 @@ export function Header({
                     </div>
 
                     <div className="p-2">
-                      <Link href="/account" className="flex rounded-lg px-3 py-2 text-sm text-ink-soft transition hover:bg-paper hover:text-ink">
+                      <Link href={isAdmin ? "/admin" : "/account"} className="flex rounded-lg px-3 py-2 text-sm text-ink-soft transition hover:bg-paper hover:text-ink">
                         Dashboard
                       </Link>
                       <Link href="/account/orders" className="flex rounded-lg px-3 py-2 text-sm text-ink-soft transition hover:bg-paper hover:text-ink">
@@ -369,7 +371,7 @@ export function Header({
               <li><Link href="/track-order">Track Order</Link></li>
               <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/faq">FAQ</Link></li>
-              <li><Link href={isLoggedIn ? "/account" : "/account/login"}>{isLoggedIn ? "My Account" : "Sign In / Register"}</Link></li>
+              <li><Link href={isLoggedIn ? (isAdmin ? "/admin" : "/account") : "/account/login"}>{isLoggedIn ? "My Account" : "Sign In / Register"}</Link></li>
               <li><Link href="/cart">Cart</Link></li>
             </ul>
           </div>
