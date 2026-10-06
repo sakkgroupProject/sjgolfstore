@@ -88,12 +88,20 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
           <span className={product.inStock ? "text-forest" : "text-ink-soft"}>{product.inStock ? "In stock" : "Out of stock"}</span>
           {product.variantSummary ? <span className="text-moss">· {product.variantSummary}</span> : null}
         </p>
-        <Link
-          href={`/products/${product.slug}`}
-          className="btn btn-outline mt-auto w-full py-3 text-[0.68rem] opacity-90 transition group-hover:opacity-100"
-        >
-          View Product
-        </Link>
+        <div className="mt-auto pt-5 flex gap-2 opacity-95 transition-opacity group-hover:opacity-100">
+          <Link
+            href={`/products/${product.slug}`}
+            className="btn btn-outline flex-1 px-1 py-2.5 text-[0.65rem]"
+          >
+            View Product
+          </Link>
+          <Link
+            href={`/custom-orders?type=${encodeURIComponent(product.categoryName)}&model=${encodeURIComponent(product.title)}&image=${encodeURIComponent(product.imageUrl)}`}
+            className="btn btn-dark flex-1 px-1 py-2.5 text-[0.65rem]"
+          >
+            Custom Order
+          </Link>
+        </div>
       </div>
     </article>
   );

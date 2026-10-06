@@ -7,8 +7,8 @@ type Cat = { slug: string; name: string };
 export function Footer({ categories }: { categories: Cat[] }) {
   return (
     <footer className="border-t border-line bg-forest text-white">
-      <div className="wrap grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-5 lg:py-16">
-        <div className="lg:col-span-2">
+      <div className="wrap grid gap-12 py-14 md:grid-cols-3 lg:grid-cols-5 lg:py-16">
+        <div className="md:col-span-3 lg:col-span-2">
           <div className="flex items-center gap-3">
             <Image src="/sjgolfstore-logo.png" alt="SJ Golf Logo" width={40} height={40} className="h-10 w-auto object-contain brightness-0 invert opacity-90 transition-opacity hover:opacity-100" />
             <span className="leading-none">

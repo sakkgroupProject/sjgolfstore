@@ -62,7 +62,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en-US" className={`${sans.variable} ${display.variable}`}>
-      <body className="bg-white text-ink antialiased">{children}</body>
+      <body className="bg-white text-ink antialiased overflow-x-hidden">{children}</body>
     </html>
   );
 }

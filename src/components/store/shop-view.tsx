@@ -95,24 +95,8 @@ export async function ShopView({
       </section>
 
       <div className="wrap py-10 md:py-14">
-        <div className="grid gap-10 lg:grid-cols-[16rem_1fr] lg:gap-14">
-          <Suspense fallback={<div className="text-sm text-ink-soft">Loading filters…</div>}>
-            <div className="order-2 lg:order-1">
-              <Filters
-                basePath={basePath}
-                facets={{
-                  brands: facets.brands,
-                  tags: facets.tags,
-                  hands: facets.hands,
-                  flexes: facets.flexes,
-                  sizes: facets.sizes,
-                  maxPrice: facets.maxPrice,
-                }}
-              />
-            </div>
-          </Suspense>
-
-          <div className="order-1 lg:order-2">
+        <div className="grid gap-10 lg:gap-14">
+          <div className="order-1">
             <div className="flex items-center justify-between gap-4 pb-6">
               <p className="text-sm text-ink-soft">
                 Showing <span className="font-semibold text-ink">{items.length}</span> of {total} products
@@ -133,7 +117,7 @@ export async function ShopView({
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-x-5 gap-y-12">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-12">
                 {items.map((p, i) => (
                   <ProductCard key={p.id} product={p} priority={i < 4} />
                 ))}
@@ -151,9 +135,8 @@ export async function ShopView({
                     <Link
                       key={n}
                       href={qs ? `${basePath}?${qs}` : basePath}
-                      className={`grid size-10 place-items-center border text-sm transition ${
-                        n === page ? "border-forest bg-forest text-white" : "border-line hover:border-ink"
-                      }`}
+                      className={`grid size-10 place-items-center border text-sm transition ${n === page ? "border-forest bg-forest text-white" : "border-line hover:border-ink"
+                        }`}
                     >
                       {n}
                     </Link>

@@ -13,7 +13,7 @@ type Suggestion = {
   categories: { slug: string; name: string }[];
 };
 
-const PRIMARY = ["caps", "golf-balls-12pack", "putter-covers"];
+const PRIMARY = ["caps", "bucket-hats", "head-covers", "golf-balls", "kick-back"];
 
 export function Header({
   categories,

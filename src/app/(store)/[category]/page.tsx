@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { pages } from "@/db/schema";
@@ -44,6 +45,12 @@ export default async function CollectionPage({ params, searchParams }: Params) {
   if (!found) notFound();
 
   if (found.kind === "page") {
+    if (slug === "custom-orders") {
+      const user = await getCurrentUser();
+      if (!user) {
+        redirect("/account/login?next=/custom-orders");
+      }
+    }
     return <StaticPageView slug={slug} />;
   }
 
