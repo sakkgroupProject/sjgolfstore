@@ -13,7 +13,7 @@ type Suggestion = {
   categories: { slug: string; name: string }[];
 };
 
-const PRIMARY = ["caps", "bucket-hats", "head-covers", "golf-balls", "kick-back"];
+const PRIMARY = ["caps", "bucket-hats", "head-covers", "putter-covers", "iron-covers", "golf-balls", "kick-back"];
 
 export function Header({
   categories,
@@ -168,12 +168,6 @@ export function Header({
                 {c.slug === "golf-balls-12pack" ? "Golf Balls" : c.name.replace(/^Golf /, "")}
               </Link>
             ))}
-            <Link
-              href="/custom-orders"
-              className="py-2 text-[0.8rem] font-medium uppercase tracking-[0.12em] transition hover:text-forest whitespace-nowrap"
-            >
-              Custom Orders
-            </Link>
           </nav>
 
           <div className="ml-auto flex items-center gap-1 md:gap-2">
@@ -359,12 +353,6 @@ export function Header({
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link href="/custom-orders" className="flex items-center justify-between py-3.5">
-                  <span className="text-lg font-medium">Custom Orders</span>
-                  <span className="text-xs text-moss">Clubs & Events</span>
-                </Link>
-              </li>
             </ul>
             <p className="eyebrow mb-3 mt-8">Help</p>
             <ul className="space-y-3 text-sm">
