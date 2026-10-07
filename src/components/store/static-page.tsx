@@ -28,7 +28,7 @@ export async function StaticPageView({ slug }: { slug: string }) {
         <div className="mt-12 border-t border-line pt-10">
           <h2 className="text-2xl">Send us a message</h2>
           <p className="mt-2 text-sm text-ink-soft">
-            Our Orlando team answers every enquiry within one business day.
+            Our Miami team answers every enquiry within one business day.
           </p>
           <div className="mt-6">
             <ContactForm />

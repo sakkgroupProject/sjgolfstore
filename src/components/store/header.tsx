@@ -107,7 +107,7 @@ export function Header({
             <Link href="/contact" className="hover:text-sand">
               Contact
             </Link>
-            <span className="text-white/60">Call (407) 555-0100</span>
+            <span className="text-white/60">Call (786) 600-5554</span>
           </div>
         </div>
       </div>
@@ -150,12 +150,6 @@ export function Header({
                       <p className="text-xs text-ink-soft">{c.tagline}</p>
                     </Link>
                   ))}
-                </div>
-                <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                  <span className="text-xs text-ink-soft">Shop the full catalogue</span>
-                  <Link href="/shop" className="text-xs font-semibold uppercase tracking-[0.16em] text-forest">
-                    Shop All →
-                  </Link>
                 </div>
               </div>
             </div>
@@ -340,11 +334,6 @@ export function Header({
           <div className="flex-1 overflow-y-auto px-5 py-6">
             <p className="eyebrow mb-3">Shop</p>
             <ul className="divide-y divide-line border-y border-line">
-              <li>
-                <Link href="/shop" className="flex items-center justify-between py-3.5 text-lg font-semibold">
-                  Shop All <span className="text-moss">→</span>
-                </Link>
-              </li>
               {categories.map((c) => (
                 <li key={c.slug}>
                   <Link href={`/${c.slug}`} className="flex items-center justify-between py-3.5">

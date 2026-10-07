@@ -24,9 +24,9 @@ export default async function HomePage() {
     "@type": "Organization",
     name: "SJ Golf Store",
     url: "https://sjgolfstore.com",
-    description: "Premium golf equipment retailer based in Orlando, Florida.",
-    address: { "@type": "PostalAddress", streetAddress: "2100 Magnum Ave, Suite 120", addressLocality: "Orlando", addressRegion: "FL", postalCode: "32809", addressCountry: "US" },
-    contactPoint: [{ "@type": "ContactPoint", telephone: "+1-407-555-0100", contactType: "customer service" }],
+    description: "Premium golf equipment retailer based in Miami, Florida.",
+    address: { "@type": "PostalAddress", streetAddress: "8440 South Dixie Highway, Unit 1505", addressLocality: "Miami", addressRegion: "FL", postalCode: "33143", addressCountry: "US" },
+    contactPoint: [{ "@type": "ContactPoint", telephone: "+1-786-600-5554", contactType: "customer service" }],
   };
 
   return (
@@ -200,7 +200,7 @@ export default async function HomePage() {
           <div className="flex flex-col justify-center">
             <p className="eyebrow">{story?.eyebrow ?? "Our Story"}</p>
             <h2 className="mt-4 text-3xl md:text-4xl">{story?.title ?? "Built by golfers, for golfers"}</h2>
-            <div className="prose prose-sm mt-6 text-ink-soft" dangerouslySetInnerHTML={{ __html: story?.body ?? "<p>SJ Golf Store started in a 400 square foot shop in Orlando with one fitting bay and a simple idea: sell the gear we actually play. Today we stock the full line of clubs, balls, bags and apparel — and we still fit every order like it is going in our own bag.</p><ul><li>Every club hand-inspected before it ships</li><li>Free expert fitting advice on any order</li><li>Authorized dealer — full manufacturer warranty</li></ul>" }} />
+            <div className="prose prose-sm mt-6 text-ink-soft" dangerouslySetInnerHTML={{ __html: story?.body ?? "<p>SJ Golf Store started in a 400 square foot shop in Miami with one fitting bay and a simple idea: sell the gear we actually play. Today we stock the full line of clubs, balls, bags and apparel — and we still fit every order like it is going in our own bag.</p><ul><li>Every club hand-inspected before it ships</li><li>Free expert fitting advice on any order</li><li>Authorized dealer — full manufacturer warranty</li></ul>" }} />
             <Link href="/shop" className="btn btn-primary mt-8 self-start">
               Shop All Equipment
             </Link>

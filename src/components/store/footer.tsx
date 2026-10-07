@@ -13,7 +13,7 @@ export function Footer({ categories }: { categories: Cat[] }) {
             <Image src="/sjgolfstore-logo.png" alt="SJ Golf Logo" width={40} height={40} className="h-10 w-auto object-contain brightness-0 invert opacity-90 transition-opacity hover:opacity-100" />
             <span className="leading-none">
               <span className="block text-[1.05rem] font-medium uppercase tracking-[0.24em] text-white">SJ Golf</span>
-              <span className="mt-1 block text-[0.6rem] uppercase tracking-[0.4em] text-sand/80">Est. Orlando, FL</span>
+              <span className="mt-1 block text-[0.6rem] uppercase tracking-[0.4em] text-sand/80">Est. Miami, Florida</span>
             </span>
           </div>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/70">
@@ -32,7 +32,6 @@ export function Footer({ categories }: { categories: Cat[] }) {
         <div>
           <p className="eyebrow text-sand">Shop</p>
           <ul className="mt-4 space-y-2.5 text-sm text-white/75">
-            <li><Link href="/shop" className="hover:text-white">Shop All</Link></li>
             {categories.map((c) => (
               <li key={c.slug}>
                 <Link href={`/${c.slug}`} className="hover:text-white">
@@ -67,7 +66,7 @@ export function Footer({ categories }: { categories: Cat[] }) {
           <p className="eyebrow mt-7 text-sand">Support</p>
           <ul className="mt-3 space-y-1.5 text-sm text-white/75">
             <li>support@sjgolfstore.com</li>
-            <li>(407) 555-0100</li>
+            <li>(786) 600-5554</li>
             <li>Mon–Fri, 9am–6pm ET</li>
           </ul>
         </div>

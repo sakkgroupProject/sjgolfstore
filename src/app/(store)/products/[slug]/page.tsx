@@ -172,9 +172,6 @@ export default async function ProductPage({ params }: Params) {
               <div className="mt-8 relative aspect-video w-full overflow-hidden rounded-sm bg-black/5">
                 <video 
                   src={product.videoUrl || "/pasadagolfkickback.mp4"} 
-                  autoPlay 
-                  muted 
-                  loop 
                   controls 
                   playsInline
                   className="w-full h-full object-cover"
