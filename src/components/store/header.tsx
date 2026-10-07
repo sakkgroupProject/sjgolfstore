@@ -138,21 +138,6 @@ export function Header({
           </Link>
 
           <nav className="ml-4 hidden items-center gap-7 lg:flex">
-            <div className="group relative">
-              <Link href="/shop" className="flex items-center gap-1 py-2 text-[0.8rem] font-medium uppercase tracking-[0.12em]">
-                Shop
-              </Link>
-              <div className="invisible absolute left-0 top-full w-[34rem] translate-y-2 border border-line bg-white p-6 opacity-0 shadow-xl transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-                <div className="grid grid-cols-2 gap-x-8 gap-y-3">
-                  {categories.map((c) => (
-                    <Link key={c.slug} href={`/${c.slug}`} className="group/item">
-                      <p className="text-sm font-semibold group-hover/item:text-forest">{c.name}</p>
-                      <p className="text-xs text-ink-soft">{c.tagline}</p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
             {navItems.map((c) => (
               <Link
                 key={c.slug}
