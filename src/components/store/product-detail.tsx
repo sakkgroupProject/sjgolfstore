@@ -18,6 +18,7 @@ export type VariantData = {
   options: Record<string, string>;
   inventoryQty: number;
   imageUrl: string;
+  variantImages?: string[];
 };
 
 /* ------------------------------------------------------------------ *
@@ -44,19 +45,22 @@ export function ProductGallery({
   };
 
   useEffect(() => {
-    const handleVariantImage = (e: CustomEvent<string>) => {
-      const url = e.detail;
-      if (!url) return;
-      const idx = images.findIndex((img) => img.url === url);
-      if (idx !== -1) {
-        scrollTo(idx);
-      } else {
-        setImages((prev) => [{ url, alt: title }, ...prev]);
-        scrollTo(0);
+    const handleVariantImages = (e: CustomEvent<string[]>) => {
+      const urls = e.detail;
+      if (!urls || urls.length === 0) {
+         setImages(initialImages);
+         return;
       }
+      
+      const newImages = urls.map(url => {
+         const existing = initialImages.find(img => img.url === url);
+         return existing || { url, alt: title };
+      });
+      setImages(newImages);
+      scrollTo(0);
     };
-    window.addEventListener("variantImageSelected", handleVariantImage as EventListener);
-    return () => window.removeEventListener("variantImageSelected", handleVariantImage as EventListener);
+    window.addEventListener("variantImagesSelected", handleVariantImages as EventListener);
+    return () => window.removeEventListener("variantImagesSelected", handleVariantImages as EventListener);
   }, [images, title]);
 
   return (
@@ -150,8 +154,9 @@ export function ProductPurchase({
   const maxQty = variant?.inventoryQty ?? 10;
 
   useEffect(() => {
-    if (variant?.imageUrl) {
-      window.dispatchEvent(new CustomEvent("variantImageSelected", { detail: variant.imageUrl }));
+    if (variant) {
+      const images = (variant.variantImages?.length ? variant.variantImages : [variant.imageUrl]).filter(Boolean);
+      window.dispatchEvent(new CustomEvent("variantImagesSelected", { detail: images }));
     }
   }, [selected, variant]);
 

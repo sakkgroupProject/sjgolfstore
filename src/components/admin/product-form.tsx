@@ -235,29 +235,16 @@ export function ProductForm({ categories, values }: { categories: Category[]; va
                         <td className="py-2 pr-3 font-medium">{Object.values(combo).join(" / ") || "Default"}</td>
                         <td className="py-2 pr-3">
                           <div className="flex gap-2 items-center">
-                            <input
-                              type="hidden"
-                              name="variantImageUrl"
-                              value={imageUrl}
-                              readOnly
-                            />
-                            {imageUrl ? (
-                                <Image
-                                  src={imageUrl}
-                                  alt={`${Object.values(combo).join(" / ") || "Variant"} image`}
-                                  width={64}
-                                  height={64}
-                                  className="size-16 shrink-0 rounded-sm border border-black/10 object-cover shadow-sm"
-                                />
-                            ) : (
-                                <div className="size-16 shrink-0 rounded-sm border border-dashed border-black/20 bg-paper" />
-                            )}
-                            <ImageKitUploadButton
-                              targetName=""
-                              buttonLabel="Upload"
-                              folder="/products"
-                              onUrlsUploaded={(urls) => setVariantEdits((v) => ({ ...v, [variantKey]: { ...v[variantKey], imageUrl: urls[0] } }))}
-                            />
+                            <div className="min-w-[12rem]">
+                              <MediaUploadField
+                                name="variantImageUrl"
+                                initialUrls={(imageUrl || "").split(/\r?\n/).filter(Boolean)}
+                                multiple
+                                folder="/products"
+                                buttonLabel="Add images"
+                                onUrlsChange={(urls) => setVariantEdits((v) => ({ ...v, [variantKey]: { ...v[variantKey], imageUrl: urls.join("\n") } }))}
+                              />
+                            </div>
                           </div>
                         </td>
                         <td className="py-2 pr-3">

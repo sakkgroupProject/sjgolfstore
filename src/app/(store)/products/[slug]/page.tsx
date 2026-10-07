@@ -139,6 +139,7 @@ export default async function ProductPage({ params }: Params) {
                 options: normalizeVariantOptions(v.options, v.title, optionDefinitions),
                 inventoryQty: v.inventoryQty,
                 imageUrl: v.imageUrl,
+                variantImages: v.variantImages,
               }))}
               basePriceCents={product.priceCents}
               baseCompareAtCents={product.compareAtCents}

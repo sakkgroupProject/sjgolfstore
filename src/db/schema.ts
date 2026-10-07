@@ -85,6 +85,7 @@ export const variants = pgTable("variants", {
   inventoryQty: integer("inventory_qty").notNull().default(0),
   weightGrams: integer("weight_grams").notNull().default(0),
   imageUrl: text("image_url").notNull().default(""),
+  variantImages: jsonb("variant_images").$type<string[]>().notNull().default([]),
   allowBackorder: boolean("allow_backorder").notNull().default(false),
   position: integer("position").notNull().default(0),
 });

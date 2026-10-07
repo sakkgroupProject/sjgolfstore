@@ -157,6 +157,8 @@ export async function saveProductAction(formData: FormData) {
           finalImageUrl = images[0]?.url ?? "";
         }
 
+        const vImages = variantImageUrls[vi] ? variantImageUrls[vi].split(/\r?\n/).filter(Boolean) : [];
+
         return {
           productId,
           title: variantTitle,
@@ -167,7 +169,8 @@ export async function saveProductAction(formData: FormData) {
           options: combo,
           inventoryQty: Number(variantStock[vi] ?? 0) || 0,
           weightGrams: payload.weightGrams,
-          imageUrl: finalImageUrl,
+          imageUrl: vImages[0] || finalImageUrl,
+          variantImages: vImages,
           position: vi,
         };
       }),
@@ -177,7 +180,7 @@ export async function saveProductAction(formData: FormData) {
     const variantPrices = formData.getAll("variantPrice").map(String);
     const variantStock = formData.getAll("variantStock").map(String);
     const variantImageUrls = formData.getAll("variantImageUrl").map(String);
-
+    const vImages = variantImageUrls[0] ? variantImageUrls[0].split(/\r?\n/).filter(Boolean) : [];
     await db.insert(variants).values({
       productId,
       title: "Standard",
@@ -188,7 +191,8 @@ export async function saveProductAction(formData: FormData) {
       options: {},
       inventoryQty: Number(variantStock[0] ?? 10) || 0,
       weightGrams: payload.weightGrams,
-      imageUrl: variantImageUrls[0] || images[0]?.url || "",
+      imageUrl: vImages[0] || images[0]?.url || "",
+      variantImages: vImages,
       position: 0,
     });
   }
