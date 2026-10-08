@@ -48,13 +48,13 @@ export function ProductGallery({
     const handleVariantImages = (e: CustomEvent<string[]>) => {
       const urls = e.detail;
       if (!urls || urls.length === 0) {
-         setImages(initialImages);
-         return;
+        setImages(initialImages);
+        return;
       }
-      
+
       const newImages = urls.map(url => {
-         const existing = initialImages.find(img => img.url === url);
-         return existing || { url, alt: title };
+        const existing = initialImages.find(img => img.url === url);
+        return existing || { url, alt: title };
       });
       setImages(newImages);
       scrollTo(0);
@@ -80,11 +80,6 @@ export function ProductGallery({
             className={`object-contain p-4 transition-transform duration-700 ${zoom ? "scale-[1.15]" : "scale-100"}`}
           />
         ) : null}
-        {videoUrl ? (
-          <span className="absolute bottom-4 left-4 bg-white/90 px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em]">
-            ▶ Video available
-          </span>
-        ) : null}
         <span className="absolute right-4 top-4 bg-white/85 px-2.5 py-1 text-[0.6rem] uppercase tracking-[0.16em] text-ink-soft">
           {active + 1} / {images.length}
         </span>
@@ -96,9 +91,8 @@ export function ProductGallery({
             <button
               key={img.url + i}
               onClick={() => scrollTo(i)}
-              className={`relative aspect-square w-20 shrink-0 snap-center overflow-hidden border transition lg:w-full ${
-                i === active ? "border-forest" : "border-line hover:border-ink"
-              }`}
+              className={`relative aspect-square w-20 shrink-0 snap-center overflow-hidden border transition lg:w-full ${i === active ? "border-forest" : "border-line hover:border-ink"
+                }`}
               aria-label={`View image ${i + 1}`}
             >
               <Image src={img.url} alt="" fill sizes="96px" className="object-contain p-1" />
@@ -219,7 +213,7 @@ export function ProductPurchase({
       <div className="mt-8 space-y-7">
         {options.map((opt) => {
           if (opt.values.length <= 1) return null;
-          
+
           const many = opt.values.length > 6;
           return (
             <div key={opt.name}>
@@ -250,11 +244,10 @@ export function ProductPurchase({
                         type="button"
                         aria-pressed={isActive}
                         onClick={() => select(opt.name, v)}
-                        className={`min-w-[3.4rem] border px-4 py-3 text-sm font-medium transition ${
-                          isActive
-                            ? "border-forest bg-forest text-white"
-                            : "border-line bg-white text-ink hover:border-ink"
-                        } ${isHand ? "rounded-full px-5" : "rounded-[2px]"}`}
+                        className={`min-w-[3.4rem] border px-4 py-3 text-sm font-medium transition ${isActive
+                          ? "border-forest bg-forest text-white"
+                          : "border-line bg-white text-ink hover:border-ink"
+                          } ${isHand ? "rounded-full px-5" : "rounded-[2px]"}`}
                       >
                         {v}
                       </button>

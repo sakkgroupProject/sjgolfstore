@@ -8,6 +8,7 @@ import { getProductBySlug, getRelatedProducts } from "@/lib/catalog";
 import { normalizeOptionValues, normalizeVariantOptions } from "@/lib/variant-options";
 import { Accordion, ProductGallery, ProductPurchase } from "@/components/store/product-detail";
 import { ProductCard, Stars } from "@/components/store/product-card";
+import { ProductVideo } from "@/components/store/product-video";
 import { formatMoney } from "@/lib/format";
 import { RotateCcw, ShieldCheck, Truck, Wrench } from "lucide-react";
 
@@ -110,6 +111,12 @@ export default async function ProductPage({ params }: Params) {
       <div className="wrap grid gap-10 pb-20 pt-8 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
         <div>
           <ProductGallery images={product.images ?? []} videoUrl={product.videoUrl || ((product.slug.toLowerCase().includes("kick-back") || product.title.toLowerCase().includes("kickback") || product.title.toLowerCase().includes("kick back")) ? "/pasadagolfkickback.mp4" : undefined)} title={product.title} />
+          
+          {(product.videoUrl || product.slug.toLowerCase().includes("kick-back") || product.title.toLowerCase().includes("kickback") || product.title.toLowerCase().includes("kick back")) ? (
+            <div className="mt-8 relative aspect-video w-full overflow-hidden rounded-sm bg-black/5">
+              <ProductVideo src={product.videoUrl || "/pasadagolfkickback.mp4"} />
+            </div>
+          ) : null}
         </div>
 
         <div className="lg:sticky lg:top-28 lg:self-start">
@@ -169,17 +176,7 @@ export default async function ProductPage({ params }: Params) {
             <h2 className="text-2xl">Product details</h2>
             <p className="mt-4 whitespace-pre-line text-[0.95rem] leading-relaxed text-ink-soft">{product.description}</p>
 
-            {(product.videoUrl || product.slug.toLowerCase().includes("kick-back") || product.title.toLowerCase().includes("kickback") || product.title.toLowerCase().includes("kick back")) ? (
-              <div className="mt-8 relative aspect-video w-full overflow-hidden rounded-sm bg-black/5">
-                <video 
-                  src={product.videoUrl || "/pasadagolfkickback.mp4"} 
-                  autoPlay
-                  controls 
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ) : null}
+
 
             {product.specs?.length ? (
               <div className="mt-8">

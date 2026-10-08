@@ -149,7 +149,6 @@ export default async function HomePage() {
             <video
               src="/pasadagolfkickback.mp4"
               autoPlay
-              muted
               loop
               controls
               playsInline
