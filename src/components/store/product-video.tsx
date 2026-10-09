@@ -5,6 +5,7 @@ export function ProductVideo({ src }: { src: string }) {
     <video
       src={src}
       autoPlay
+      muted
       controls
       playsInline
       className="w-full h-full object-cover"
